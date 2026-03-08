@@ -7,22 +7,27 @@
 }
 
 html, body {
-  background: #0a0908;
-  color: #f4efe6;
+  background: #f2f2f0;
+  color: #1a1a18;
   font-family: 'DM Mono', monospace;
   -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
-  background: rgba(200, 168, 75, 0.3);
+  background: rgba(200, 168, 75, 0.25);
 }
 
 ::-webkit-scrollbar {
-  width: 3px;
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #e8e8e5;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(200, 168, 75, 0.2);
+  background: rgba(26,26,24,0.2);
+  border-radius: 2px;
 }
 
 @keyframes fadeUp {
@@ -41,10 +46,5 @@ html, body {
 
 @keyframes drift {
   0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-12px) rotate(0.5deg); }
-}
-
-@keyframes scanline {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(100vh); }
+  50% { transform: translateY(-10px) rotate(1deg); }
 }
