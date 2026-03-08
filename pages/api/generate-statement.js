@@ -3,6 +3,10 @@
 // Handles text + base64 image inputs securely on the server side.
 // Browser calls /api/generate-statement → this function → Anthropic API
 
+export const config = {
+  maxDuration: 60,
+};
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
@@ -15,9 +19,12 @@ export default async function handler(req, res) {
 
   const { images, discipline, level, levelLabel, tone, toneLabel, existingStatement, cv, extraNotes } = req.body;
 
+  // Limit to 3 images max to avoid timeout
+  const safeImages = (images || []).slice(0, 3);
+
   const textPrompt = `You are an expert art world writer who crafts professional artist statements and CVs for gallery submissions, grant applications, and residency proposals.
 
-${images && images.length > 0 ? `Analyse the ${images.length} artwork image(s) provided and the artist's context below.` : "Using the artist's context below (no images provided),"} Then generate:
+${safeImages.length > 0 ? `Analyse the ${safeImages.length} artwork image(s) provided and the artist's context below.` : "Using the artist's context below (no images provided),"} Then generate:
 
 1. ARTIST STATEMENT (250–350 words)
 2. SHORT STATEMENT (80–100 words, for bio sections and fair catalogues)
@@ -53,8 +60,8 @@ Respond ONLY in this exact JSON format, no preamble, no markdown fences:
   // Build message content — text + optional images
   const content = [];
 
-  if (images && images.length > 0) {
-    images.forEach(img => {
+  if (safeImages.length > 0) {
+    safeImages.forEach(img => {
       content.push({
         type: "image",
         source: { type: "base64", media_type: img.mediaType, data: img.base64 }
