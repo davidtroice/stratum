@@ -151,7 +151,7 @@ export default function OpportunityDatabase({ isPro = false, onUpgrade = () => {
   const selMatch = sel ? matchScore(sel, artistLevel) : 0;
 
   return (
-    <div style={{ background:B.bg, color:B.ink, fontFamily:"monospace", height:"100vh", display:"flex", flexDirection:"column", fontSize:"12px", paddingTop:"52px" }}>
+    <div style={{ background:B.bg, color:B.ink, fontFamily:"monospace", minHeight:"100vh", display:"flex", flexDirection:"column", fontSize:"12px", paddingTop:"52px" }}>
 
       {/* HEADER */}
       <div style={{ padding:"14px 28px", borderBottom:`1px solid ${B.border}`, display:"flex", alignItems:"center", justifyContent:"space-between", flexShrink:0, background:B.bg3 }}>
@@ -198,10 +198,10 @@ export default function OpportunityDatabase({ isPro = false, onUpgrade = () => {
       </div>
 
       {/* BODY */}
-      <div style={{ display:"grid", gridTemplateColumns: sel ? "1fr 380px" : "1fr", flex:1, overflow:"hidden" }}>
+      <div style={{ display:"grid", gridTemplateColumns: sel ? "1fr 380px" : "1fr", flex:1, minHeight:"400px" }}>
 
         {/* LIST */}
-        <div style={{ overflowY:"auto", background:B.bg }}>
+        <div style={{ background:B.bg }}>
           <div style={{ padding:"8px 28px 4px", fontSize:"9px", letterSpacing:"0.18em", textTransform:"uppercase", color:B.muted }}>
             {filtered.length} opportunities {filterRegion !== "all" ? `· ${REGION_META[filterRegion]?.label}` : ""}
           </div>
