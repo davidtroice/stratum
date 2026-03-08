@@ -53,8 +53,8 @@ export default function Index() {
   }, []);
 
   const navigate = useCallback((dest) => {
-    if ((dest === "galleries" || dest === "opportunities") && !isPro) {
-      setPaywall({ feature: dest === "galleries" ? "Gallery Matching" : "Full Opportunity Database" });
+    if (dest === "galleries" && !isPro) {
+      setPaywall({ feature: "Gallery Matching" });
       return;
     }
     setPaywall(null);
