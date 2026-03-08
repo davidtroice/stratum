@@ -11,9 +11,9 @@ const PRO_FEATURES = [
   { icon: "∴", text: "Unlimited AI career assessments" },
   { icon: "⊕", text: "Full opportunity database — 80+ residencies, grants, fairs worldwide" },
   { icon: "◎", text: "Gallery matching + personalised outreach templates" },
+  { icon: "✍", text: "Portfolio & AI Statement Builder — upload your work, get a professional statement + CV" },
   { icon: "🇲🇽", text: "Mexico & Latin America opportunities — FONCA, Casa Wabi, ZONAMACO and more" },
   { icon: "→", text: "Priority mission list with XP tracking" },
-  { icon: "↑", text: "Career progress tracking over time" },
 ];
 
 export default function Paywall({ feature, onClose, onUpgrade, loading }) {
