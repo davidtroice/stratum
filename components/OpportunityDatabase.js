@@ -114,7 +114,7 @@ const Pill = ({ active, onClick, children, accent = B.gold }) => (
   </button>
 );
 
-export default function OpportunityDatabase() {
+export default function OpportunityDatabase({ isPro = false, onUpgrade = () => {} }) {
   const [search, setSearch] = useState("");
   const [filterType, setFilterType] = useState("all");
   const [filterLevel, setFilterLevel] = useState("all");
@@ -142,6 +142,10 @@ export default function OpportunityDatabase() {
         return 0;
       });
   }, [search, filterType, filterLevel, filterRegion, sortBy, artistLevel]);
+
+  const FREE_LIMIT = 5;
+  const displayList = isPro ? filtered : filtered.slice(0, FREE_LIMIT);
+  const showPaywallRow = !isPro && filtered.length > FREE_LIMIT;
 
   const sel = selected ? OPPORTUNITIES.find(o => o.id === selected) : null;
   const selMatch = sel ? matchScore(sel, artistLevel) : 0;
@@ -201,7 +205,7 @@ export default function OpportunityDatabase() {
           <div style={{ padding:"8px 28px 4px", fontSize:"9px", letterSpacing:"0.18em", textTransform:"uppercase", color:B.muted }}>
             {filtered.length} opportunities {filterRegion !== "all" ? `· ${REGION_META[filterRegion]?.label}` : ""}
           </div>
-          {filtered.map((o, i) => {
+          {displayList.map((o, i) => {
             const meta = TYPE_META[o.type];
             const match = matchScore(o, artistLevel);
             const isSel = selected === o.id;
@@ -230,7 +234,19 @@ export default function OpportunityDatabase() {
               </div>
             );
           })}
-          {filtered.length === 0 && (
+          {showPaywallRow && (
+            <div onClick={onUpgrade} style={{ padding:"24px 28px", cursor:"pointer", background:`linear-gradient(${B.bg3}, ${B.bg})`, borderTop:`2px solid ${B.gold}`, textAlign:"center" }}>
+              <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"20px", fontWeight:400, color:B.ink, marginBottom:"6px" }}>
+                +{filtered.length - FREE_LIMIT} more opportunities
+              </div>
+              <div style={{ fontSize:"10px", color:B.mid, marginBottom:"14px" }}>
+                FONCA, Casa Wabi, ZONAMACO, Rijksakademie, Guggenheim and {filtered.length - FREE_LIMIT - 1} more — unlock with Pro
+              </div>
+              <div style={{ display:"inline-block", padding:"10px 28px", background:B.gold, color:"#fff", fontFamily:"monospace", fontSize:"9px", fontWeight:600, letterSpacing:"0.22em", textTransform:"uppercase" }}>
+                Upgrade to Pro →
+              </div>
+            </div>
+          )}
             <div style={{ padding:"60px", textAlign:"center", color:B.muted, letterSpacing:"0.15em" }}>No results found</div>
           )}
         </div>
