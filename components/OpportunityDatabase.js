@@ -247,6 +247,7 @@ export default function OpportunityDatabase({ isPro = false, onUpgrade = () => {
               </div>
             </div>
           )}
+          {filtered.length === 0 && (
             <div style={{ padding:"60px", textAlign:"center", color:B.muted, letterSpacing:"0.15em" }}>No results found</div>
           )}
         </div>
