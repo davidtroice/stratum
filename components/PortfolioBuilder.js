@@ -61,70 +61,24 @@ export default function PortfolioBuilder() {
     setLoading(true);
     setStep("generate");
     try {
-      const imageContent = images.map(img => ({
-        type: "image",
-        source: { type: "base64", media_type: img.mediaType, data: img.base64 }
-      }));
-
-      const textPrompt = `You are an expert art world writer who crafts professional artist statements and CVs for gallery submissions, grant applications, and residency proposals.
-
-Analyse the ${images.length} artwork image(s) provided and the artist's context below. Then generate:
-
-1. ARTIST STATEMENT (250–350 words)
-2. SHORT STATEMENT (80–100 words, for bio sections and fair catalogues)  
-3. CV STRUCTURE (formatted professional CV template with placeholder sections)
-4. 3 GALLERY PITCH OPENERS (one-paragraph openers for cold outreach emails)
-
-ARTIST CONTEXT:
-- Discipline: ${form.discipline || "Visual Artist"}
-- Career Level: ${CAREER_LEVELS.find(l=>l.v===form.level)?.l} — ${CAREER_LEVELS.find(l=>l.v===form.level)?.desc}
-- Desired tone: ${TONES.find(t=>t.v===form.tone)?.l} — ${TONES.find(t=>t.v===form.tone)?.desc}
-${form.existingStatement ? `- Existing statement to refine/build from:\n${form.existingStatement}` : ""}
-${form.cv ? `- CV/exhibition history notes:\n${form.cv}` : ""}
-${form.extraNotes ? `- Additional notes from artist:\n${form.extraNotes}` : ""}
-
-INSTRUCTIONS:
-- Analyse the visual themes, materials, mood, scale, and conceptual territory visible in the images
-- Write in a voice that matches the tone requested
-- The statement should feel authored by the artist, not written about them
-- Reference specific formal or conceptual elements visible in the work
-- Avoid art world clichés: "explores", "questions", "investigates", "unpacks", "navigates"
-- Use precise, specific language
-- The CV structure should be professional and formatted for gallery/institutional submission
-
-Respond ONLY in this exact JSON format, no preamble, no markdown fences:
-{
-  "visualAnalysis": "2-3 sentence analysis of what you see in the work — themes, materials, mood, formal qualities",
-  "statement": "Full 250-350 word artist statement",
-  "shortStatement": "80-100 word short statement",
-  "cv": "Formatted CV structure as plain text with sections and placeholders",
-  "pitchOpeners": ["pitch opener 1", "pitch opener 2", "pitch opener 3"],
-  "keywords": ["keyword1", "keyword2", "keyword3", "keyword4", "keyword5"]
-}`;
-
-      const messages = [
-        {
-          role: "user",
-          content: images.length > 0
-            ? [...imageContent, { type: "text", text: textPrompt }]
-            : [{ type: "text", text: textPrompt }]
-        }
-      ];
-
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
+      const response = await fetch("/api/generate-statement", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 2000,
-          messages,
+          images: images.map(img => ({ base64: img.base64, mediaType: img.mediaType })),
+          discipline: form.discipline,
+          level: form.level,
+          levelLabel: `${CAREER_LEVELS.find(l=>l.v===form.level)?.l} — ${CAREER_LEVELS.find(l=>l.v===form.level)?.desc}`,
+          tone: form.tone,
+          toneLabel: `${TONES.find(t=>t.v===form.tone)?.l} — ${TONES.find(t=>t.v===form.tone)?.desc}`,
+          existingStatement: form.existingStatement,
+          cv: form.cv,
+          extraNotes: form.extraNotes,
         })
       });
 
-      const data = await response.json();
-      const text = data.content?.find(b => b.type === "text")?.text || "";
-      const clean = text.replace(/```json|```/g, "").trim();
-      const parsed = JSON.parse(clean);
+      const parsed = await response.json();
+      if (!response.ok) throw new Error(parsed.error || "API error");
       setResult(parsed);
       setStep("result");
     } catch (err) {
