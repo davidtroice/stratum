@@ -7,11 +7,13 @@ import Landing from "../components/Landing";
 import Assessment from "../components/Assessment";
 import OpportunityDatabase from "../components/OpportunityDatabase";
 import GalleryMatcher from "../components/GalleryMatcher";
+import PortfolioBuilder from "../components/PortfolioBuilder";
 import Paywall from "../components/Paywall";
 
 const NAV = [
   { id: "assessment",    label: "Assessment" },
   { id: "opportunities", label: "Opportunities ✦" },
+  { id: "portfolio",     label: "Statement Builder ✦" },
   { id: "galleries",     label: "Galleries ✦" },
 ];
 
@@ -53,8 +55,8 @@ export default function Index() {
   }, []);
 
   const navigate = useCallback((dest) => {
-    if (dest === "galleries" && !isPro) {
-      setPaywall({ feature: "Gallery Matching" });
+    if ((dest === "galleries" || dest === "portfolio") && !isPro) {
+      setPaywall({ feature: dest === "galleries" ? "Gallery Matching" : "Statement Builder" });
       return;
     }
     setPaywall(null);
@@ -132,6 +134,7 @@ export default function Index() {
       {screen === "landing"       && <Landing onNavigate={navigate} isPro={isPro} onUpgrade={() => setPaywall({ feature: null })} />}
       {screen === "assessment"    && <Assessment isPro={isPro} canRun={canRunAssessment} assessCount={assessCount} onRun={onAssessmentRun} onUpgrade={() => setPaywall({ feature: "Unlimited Assessments" })} />}
       {screen === "opportunities" && <OpportunityDatabase isPro={isPro} onUpgrade={() => setPaywall({ feature: "Full Opportunity Database" })} />}
+      {screen === "portfolio"     && <PortfolioBuilder />}
       {screen === "galleries"     && <GalleryMatcher />}
 
       {paywall && <Paywall feature={paywall.feature} onClose={() => setPaywall(null)} onUpgrade={handleUpgrade} loading={checkoutLoading} />}
