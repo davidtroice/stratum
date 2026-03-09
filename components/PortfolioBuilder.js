@@ -39,15 +39,28 @@ export default function PortfolioBuilder() {
   const [copied, setCopied]       = useState(null);
   const fileRef = useRef();
 
-  const handleFiles = (files) => {
-    const imgs = Array.from(files).filter(f => f.type.startsWith("image/")).slice(0, 10);
-    imgs.forEach(file => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setImages(prev => [...prev, { file, preview: e.target.result, base64: e.target.result.split(",")[1], mediaType: file.type, name: file.name }]);
-      };
-      reader.readAsDataURL(file);
-    });
+  const compressImage = (file) => new Promise((resolve) => {
+    const canvas = document.createElement("canvas");
+    const img = new Image();
+    img.onload = () => {
+      const MAX = 800;
+      let w = img.width, h = img.height;
+      if (w > h && w > MAX) { h = Math.round((h * MAX) / w); w = MAX; }
+      else if (h > MAX) { w = Math.round((w * MAX) / h); h = MAX; }
+      canvas.width = w; canvas.height = h;
+      canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+      const compressed = canvas.toDataURL("image/jpeg", 0.7);
+      resolve({ preview: compressed, base64: compressed.split(",")[1], mediaType: "image/jpeg" });
+    };
+    img.src = URL.createObjectURL(file);
+  });
+
+  const handleFiles = async (files) => {
+    const imgs = Array.from(files).filter(f => f.type.startsWith("image/")).slice(0, 5);
+    for (const file of imgs) {
+      const compressed = await compressImage(file);
+      setImages(prev => [...prev, { ...compressed, file, name: file.name }]);
+    }
   };
 
   const handleDrop = (e) => {
@@ -82,9 +95,9 @@ export default function PortfolioBuilder() {
       setResult(parsed);
       setStep("result");
     } catch (err) {
-      console.error(err);
-      alert("Generation failed. Please check your API connection and try again.");
+      console.error("Statement API error:", err);
       setStep("context");
+      alert(`Generation failed: ${err.message}`);
     } finally {
       setLoading(false);
     }
@@ -147,7 +160,8 @@ export default function PortfolioBuilder() {
             <input ref={fileRef} type="file" accept="image/*" multiple style={{ display:"none" }} onChange={e => handleFiles(e.target.files)} />
             <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"48px", color:B.muted, lineHeight:1, marginBottom:"12px" }}>⊕</div>
             <div style={{ fontSize:"13px", color:B.mid, marginBottom:"6px" }}>Drop images here or click to browse</div>
-            <div style={{ fontSize:"10px", color:B.muted }}>JPG, PNG, WEBP · Up to 10 images · Max 5MB each</div>
+            <div style={{ fontSize:"10px", color:B.muted, marginBottom:"4px" }}>JPG, PNG, WEBP · Max 5 images</div>
+            <div style={{ fontSize:"10px", color:B.rust, fontWeight:500 }}>Images are compressed automatically — no need to resize before uploading</div>
           </div>
 
           {/* Image grid */}
