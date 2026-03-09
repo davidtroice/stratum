@@ -85,18 +85,9 @@ const COPY = {
 // 3 flat rounded rectangles, slight perspective tilt
 // top = medium grey, middle = dark, bottom = black, white gaps between
 const Logo = ({ size=36 }) => (
-  <svg width={size} height={size * 0.85} viewBox="0 0 200 170" fill="none">
-    {/* Bottom — black, widest */}
-    <rect x="8"  y="126" width="184" height="38" rx="11" fill="#0a0a0a"/>
-    {/* White gap */}
-    <rect x="8"  y="118" width="184" height="10" rx="0" fill="white"/>
-    {/* Middle — very dark */}
-    <rect x="18" y="86"  width="164" height="34" rx="10" fill="#1e1e1e"/>
-    {/* White gap */}
-    <rect x="18" y="78"  width="164" height="10" rx="0" fill="white"/>
-    {/* Top — medium grey, narrower */}
-    <rect x="30" y="44"  width="140" height="36" rx="10" fill="#4a4a4a"/>
-  </svg>
+  <img src="/logo.png" width={size} height={size}
+    style={{ objectFit:"contain", display:"block", filter:"brightness(0) invert(1)" }}
+    alt="Stratum" />
 );
 
 const PhotoPlaceholder = ({ label="" }) => (
