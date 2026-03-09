@@ -19,7 +19,7 @@ export default function Paywall({ feature, onClose, onUpgrade, loading, lang="en
   } : {
     title:"Stratum Pro", unlock:"Unlock", annual:"Annual", monthly:"Monthly", save:"save 31%",
     email:"Your email address", cta:(plan)=>plan==="annual"?"Unlock Pro — $1,980 MXN/yr →":"Unlock Pro — $240 MXN/mo →",
-    secure:TL.secure, err:TL.err, loading:TL.loading,
+    secure:"Secure payment via Stripe · Cancel anytime", err:"Please enter a valid email.", loading:"Redirecting…",
     features:["Unlimited AI career assessments","Full opportunity database — 100+ residencies, grants, fairs worldwide","Gallery matching + personalised outreach templates","Portfolio & AI Statement Builder","Mexico & Latin America opportunities — FONCA, Casa Wabi, ZONAMACO and more","Priority mission list with full career roadmap"]
   };
   const [plan, setPlan]   = useState("annual");
@@ -98,11 +98,11 @@ export default function Paywall({ feature, onClose, onUpgrade, loading, lang="en
           {/* CTA */}
           <button onClick={handleSubmit} disabled={loading}
             style={{ width:"100%",padding:"16px",background:loading?"#888884":"#0a0a0a",border:"none",color:"#ffffff",fontFamily:"'DM Mono',monospace",fontSize:"11px",fontWeight:600,letterSpacing:"0.22em",textTransform:"uppercase",cursor:loading?"not-allowed":"pointer",transition:"opacity 0.2s" }}>
-            {loading?TL.loading:`Unlock Pro — ${plan==="annual"?"$1,980 MXN/yr":"$240 MXN/mo"} →`}
+            {loading?TL.loading:TL.cta(plan)}
           </button>
 
           <div style={{ textAlign:"center",marginTop:"14px",fontFamily:"'DM Mono',monospace",fontSize:"9px",color:"#888884",letterSpacing:"0.08em" }}>
-            Secure payment via Stripe · Cancel anytime
+            {TL.secure}
           </div>
         </div>
       </div>
