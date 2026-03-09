@@ -1,7 +1,3 @@
-// pages/index.js
-// FREE tier:  1 assessment, 5 opportunity previews, NO gallery matcher
-// PRO tier:   unlimited assessments, full opportunity database, gallery matcher
-
 import { useState, useEffect, useCallback } from "react";
 import Landing from "../components/Landing";
 import Assessment from "../components/Assessment";
@@ -11,20 +7,27 @@ import PortfolioBuilder from "../components/PortfolioBuilder";
 import Paywall from "../components/Paywall";
 
 const NAV = [
-  { id: "assessment",    label: "Assessment" },
-  { id: "opportunities", label: "Opportunities ✦" },
-  { id: "portfolio",     label: "Statement Builder ✦" },
-  { id: "galleries",     label: "Galleries ✦" },
+  { id:"assessment",    label:"Assessment" },
+  { id:"opportunities", label:"Opportunities ✦" },
+  { id:"portfolio",     label:"Statement Builder ✦" },
+  { id:"galleries",     label:"Galleries ✦" },
 ];
 
 const LS_EMAIL        = "stratum_email";
 const LS_IS_PRO       = "stratum_is_pro";
 const LS_ASSESS_COUNT = "stratum_assessment_count";
 
-const B = {
-  bg: "#f2f2f0", ink: "#1a1a18", mid: "#6b6b68",
-  border: "rgba(26,26,24,0.1)", gold: "#c8a84b",
-};
+const D = { bg:"#f2f2f0", ink:"#1a1a18", mid:"#6b6b68", border:"rgba(26,26,24,0.08)", gold:"#c8a84b" };
+
+const LogoMark = ({ size=24 }) => (
+  <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
+    <rect x="8"  y="72" width="84" height="17" rx="5" fill="#1a1a18" opacity="0.85"/>
+    <rect x="15" y="53" width="70" height="14" rx="4" fill="#1a1a18" opacity="0.58"/>
+    <rect x="22" y="36" width="56" height="13" rx="4" fill="#1a1a18" opacity="0.34"/>
+    <rect x="29" y="21" width="42" height="11" rx="3" fill="#1a1a18" opacity="0.18"/>
+    <rect x="35" y="8"  width="30" height="10" rx="3" fill="#c8a84b"/>
+  </svg>
+);
 
 export default function Index() {
   const [screen, setScreen]           = useState("landing");
@@ -97,33 +100,36 @@ export default function Index() {
   };
 
   return (
-    <div style={{ background: B.bg, minHeight: "100vh", color: B.ink }}>
+    <div style={{ background:D.bg, minHeight:"100vh", color:D.ink }}>
 
       {proJustUnlocked && (
-        <div style={{ position: "fixed", top: "20px", left: "50%", transform: "translateX(-50%)", zIndex: 300, padding: "14px 28px", background: B.gold, color: "#fff", fontFamily: "monospace", fontSize: "11px", fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", boxShadow: "0 8px 32px rgba(200,168,75,0.35)", animation: "slideDown 0.4s ease" }}>
+        <div style={{ position:"fixed", top:"20px", left:"50%", transform:"translateX(-50%)", zIndex:300, padding:"14px 28px", background:D.gold, color:"#fff", fontFamily:"monospace", fontSize:"11px", fontWeight:600, letterSpacing:"0.2em", textTransform:"uppercase", borderRadius:"8px", boxShadow:"0 8px 32px rgba(200,168,75,0.35)", animation:"slideDown 0.4s ease" }}>
           ✦ Pro unlocked — welcome to Stratum Pro
         </div>
       )}
 
       {screen !== "landing" && (
-        <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, padding: "14px 40px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(242,242,240,0.95)", backdropFilter: "blur(12px)", borderBottom: `1px solid ${B.border}` }}>
-          <button onClick={() => setScreen("landing")} style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "20px", fontWeight: 400, background: "none", border: "none", color: B.ink, cursor: "pointer" }}>
-            Str<span style={{ color: B.gold, fontStyle: "italic" }}>a</span>tum
+        <nav style={{ position:"fixed", top:0, left:0, right:0, zIndex:100, padding:"0 32px", height:"60px", display:"flex", alignItems:"center", justifyContent:"space-between", background:"rgba(242,242,240,0.93)", backdropFilter:"blur(16px)", borderBottom:`1px solid ${D.border}` }}>
+          <button onClick={()=>setScreen("landing")} style={{ display:"flex", alignItems:"center", gap:"9px", background:"none", border:"none", cursor:"pointer" }}>
+            <LogoMark size={24} />
+            <span style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"19px", fontWeight:400, color:D.ink }}>
+              Str<span style={{ color:D.gold, fontStyle:"italic" }}>a</span>tum
+            </span>
           </button>
-          <div style={{ display: "flex", gap: "24px", alignItems: "center" }}>
+          <div style={{ display:"flex", gap:"20px", alignItems:"center" }}>
             {NAV.map(n => (
-              <button key={n.id} onClick={() => navigate(n.id)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: "9px", letterSpacing: "0.22em", textTransform: "uppercase", color: screen === n.id ? B.gold : B.mid, borderBottom: screen === n.id ? `1px solid ${B.gold}` : "1px solid transparent", paddingBottom: "2px", fontFamily: "monospace" }}>
+              <button key={n.id} onClick={()=>navigate(n.id)} style={{ background:"none", border:"none", cursor:"pointer", fontSize:"9px", letterSpacing:"0.2em", textTransform:"uppercase", color: screen===n.id ? D.gold : D.mid, borderBottom: screen===n.id ? `1.5px solid ${D.gold}` : "1.5px solid transparent", paddingBottom:"2px", fontFamily:"monospace", transition:"color 0.15s" }}>
                 {n.label}
               </button>
             ))}
           </div>
           <div>
             {isPro ? (
-              <button onClick={handleManagePro} style={{ padding: "6px 14px", background: "rgba(200,168,75,0.1)", border: `1px solid rgba(200,168,75,0.3)`, color: B.gold, fontFamily: "monospace", fontSize: "9px", letterSpacing: "0.2em", textTransform: "uppercase", cursor: "pointer" }}>
+              <button onClick={handleManagePro} style={{ padding:"6px 14px", background:"rgba(200,168,75,0.1)", border:"1px solid rgba(200,168,75,0.3)", color:D.gold, fontFamily:"monospace", fontSize:"9px", letterSpacing:"0.2em", textTransform:"uppercase", cursor:"pointer", borderRadius:"6px" }}>
                 ✦ Pro
               </button>
             ) : (
-              <button onClick={() => setPaywall({ feature: null })} style={{ padding: "6px 14px", background: B.gold, border: "none", color: "#fff", fontFamily: "monospace", fontSize: "9px", fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", cursor: "pointer" }}>
+              <button onClick={()=>setPaywall({feature:null})} style={{ padding:"6px 14px", background:D.gold, border:"none", color:"#fff", fontFamily:"monospace", fontSize:"9px", fontWeight:600, letterSpacing:"0.2em", textTransform:"uppercase", cursor:"pointer", borderRadius:"6px" }}>
                 Upgrade →
               </button>
             )}
@@ -131,15 +137,15 @@ export default function Index() {
         </nav>
       )}
 
-      {screen === "landing"       && <Landing onNavigate={navigate} isPro={isPro} onUpgrade={() => setPaywall({ feature: null })} />}
-      {screen === "assessment"    && <Assessment isPro={isPro} canRun={canRunAssessment} assessCount={assessCount} onRun={onAssessmentRun} onUpgrade={() => setPaywall({ feature: "Unlimited Assessments" })} />}
-      {screen === "opportunities" && <OpportunityDatabase isPro={isPro} onUpgrade={() => setPaywall({ feature: "Full Opportunity Database" })} />}
-      {screen === "portfolio"     && <PortfolioBuilder />}
-      {screen === "galleries"     && <GalleryMatcher />}
+      {screen==="landing"       && <Landing onNavigate={navigate} isPro={isPro} onUpgrade={()=>setPaywall({feature:null})} />}
+      {screen==="assessment"    && <Assessment isPro={isPro} canRun={canRunAssessment} assessCount={assessCount} onRun={onAssessmentRun} onUpgrade={()=>setPaywall({feature:"Unlimited Assessments"})} />}
+      {screen==="opportunities" && <OpportunityDatabase isPro={isPro} onUpgrade={()=>setPaywall({feature:"Full Opportunity Database"})} />}
+      {screen==="portfolio"     && <PortfolioBuilder />}
+      {screen==="galleries"     && <GalleryMatcher />}
 
-      {paywall && <Paywall feature={paywall.feature} onClose={() => setPaywall(null)} onUpgrade={handleUpgrade} loading={checkoutLoading} />}
+      {paywall && <Paywall feature={paywall.feature} onClose={()=>setPaywall(null)} onUpgrade={handleUpgrade} loading={checkoutLoading} />}
 
-      <style>{`@keyframes slideDown { from { opacity:0; transform:translateX(-50%) translateY(-10px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }`}</style>
+      <style>{`@keyframes slideDown{from{opacity:0;transform:translateX(-50%) translateY(-10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}`}</style>
     </div>
   );
 }
