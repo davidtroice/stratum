@@ -62,7 +62,24 @@ const GALLERIES = [
 
 const TIER_LABEL = {1:"Independent",2:"Emerging Commercial",3:"Established",4:"International",5:"Top Tier"};
 
-export default function GalleryMatcher({ isPro=false, onUpgrade }) {
+export default function GalleryMatcher({ isPro=false, onUpgrade, lang="en" }) {
+  const T = lang==="es" ? {
+    heading:"Encuentra tu Galería", subFree:(n)=>`Mostrando 4 de ${n}. Actualiza para acceso completo.`, subPro:(n)=>`${n} galerías encontradas.`,
+    allRegions:"Todas las Regiones", allDisciplines:"Todas", allLevels:"Todos los Niveles", anyEntry:"Cualquier Entrada",
+    openCall:"Convocatoria Abierta", portfolioSub:"Portfolio", referralOnly:"Solo Referencia",
+    knownArtists:"Artistas Conocidos", fairPresence:"Presencia en Ferias", levelMatch:"Compatibilidad de Nivel",
+    openSub:"✓ Abierto a Submissions", closedSub:"✗ Solo Referencia/Invitación",
+    visitSite:"Visitar Galería ↗", unlockBtn:"Desbloquear Gallery Matcher →",
+    moreGalleries:(n)=>`${n} galerías más con Pro.`, fullProfiles:"Perfiles completos, estrategias de entrada."
+  } : {
+    heading:"Find Your Gallery.", subFree:(n)=>`Showing 4 of ${n}. Upgrade for full access.`, subPro:(n)=>`${n} galleries matched.`,
+    allRegions:T.allRegions, allDisciplines:T.allDisciplines, allLevels:T.allLevels, anyEntry:T.anyEntry,
+    openCall:T.openCall, portfolioSub:T.portfolioSub, referralOnly:T.referralOnly,
+    knownArtists:"Known Artists", fairPresence:"Fair Presence", levelMatch:"Career Level Match",
+    openSub:"✓ Open to Submissions", closedSub:"✗ Referral / Invitation Only",
+    visitSite:"Visit Gallery Website ↗", unlockBtn:"Unlock Gallery Matcher →",
+    moreGalleries:(n)=>`${n} more galleries in Pro.`, fullProfiles:T.fullProfiles
+  };
   const [filters, setFilters] = useState({ region:"all", discipline:"all", level:"all", entry:"all" });
   const [selected, setSelected] = useState(null);
 
@@ -105,22 +122,22 @@ export default function GalleryMatcher({ isPro=false, onUpgrade }) {
             <div style={{ fontSize:"9px", letterSpacing:"0.5em", textTransform:"uppercase", color:D.mid, marginBottom:"10px" }}>Gallery Matcher · Pro</div>
             <h1 style={{ fontFamily:"'Bodoni Moda',serif", fontSize:"clamp(32px,4vw,56px)", fontWeight:600, color:D.white, lineHeight:1, textTransform:"uppercase", marginBottom:"6px" }}>Find Your Gallery.</h1>
             <p style={{ fontFamily:"'Bodoni Moda',serif", fontSize:"16px", color:D.mid, fontStyle:"italic" }}>
-              {isPro ? `${filtered.length} galleries matched.` : `Showing 4 of ${filtered.length}. Upgrade for full access.`}
+              {isPro ? T.subPro(filtered.length) : T.subFree(filtered.length)}
             </p>
           </div>
 
           {/* Filters */}
           <div style={{ padding:"20px 48px", borderBottom:`1px solid ${D.border}` }}>
             <div style={{ display:"flex", gap:"6px", flexWrap:"wrap", marginBottom:"8px" }}>
-              {[["all","All Regions"],["mexico","México"],["latam","Latin America"],["europe","Europe"],["uk","UK"]].map(([v,l]) => <F key={v} k="region" val={v} label={l}/>)}
+              {[["all",T.allRegions],["mexico","México"],["latam","Latin America"],["europe","Europe"],["uk","UK"]].map(([v,l]) => <F key={v} k="region" val={v} label={l}/>)}
             </div>
             <div style={{ display:"flex", gap:"6px", flexWrap:"wrap", marginBottom:"8px" }}>
-              {[["all","All Disciplines"],["painting","Painting"],["sculpture","Sculpture"],["installation","Installation"],["video","Video"],["photography","Photography"]].map(([v,l]) => <F key={v} k="discipline" val={v} label={l}/>)}
+              {[["all",T.allDisciplines],["painting","Painting"],["sculpture","Sculpture"],["installation","Installation"],["video","Video"],["photography","Photography"]].map(([v,l]) => <F key={v} k="discipline" val={v} label={l}/>)}
             </div>
             <div style={{ display:"flex", gap:"6px", flexWrap:"wrap" }}>
-              {[["all","All Levels"],["2","Level 2"],["3","Level 3"],["4","Level 4"],["5","Level 5"]].map(([v,l]) => <F key={v} k="level" val={v} label={l}/>)}
+              {[["all",T.allLevels],["2","Level 2"],["3","Level 3"],["4","Level 4"],["5","Level 5"]].map(([v,l]) => <F key={v} k="level" val={v} label={l}/>)}
               <div style={{ width:"1px", background:D.border, margin:"0 4px" }}/>
-              {[["all","Any Entry"],["open-call","Open Call"],["submission","Portfolio Sub."],["referral","Referral Only"]].map(([v,l]) => <F key={v} k="entry" val={v} label={l}/>)}
+              {[["all",T.anyEntry],["open-call",T.openCall],["submission",T.portfolioSub],["referral",T.referralOnly]].map(([v,l]) => <F key={v} k="entry" val={v} label={l}/>)}
             </div>
           </div>
 
@@ -152,7 +169,7 @@ export default function GalleryMatcher({ isPro=false, onUpgrade }) {
             {!isPro && filtered.length > 4 && (
               <div style={{ padding:"48px", textAlign:"center", borderBottom:`1px solid ${D.border}` }}>
                 <div style={{ fontFamily:"'Bodoni Moda',serif", fontSize:"26px", fontStyle:"italic", color:D.white, marginBottom:"10px" }}>
-                  {filtered.length - 4} more galleries in Pro.
+                  {T.moreGalleries(filtered.length - 4)}
                 </div>
                 <p style={{ fontSize:"11px", color:D.mid, marginBottom:"22px" }}>Full profiles, entry strategies, and contact intelligence.</p>
                 <button onClick={onUpgrade} style={{ padding:"13px 36px", background:D.white, border:"1px solid rgba(10,10,10,0.8)", color:D.black, fontFamily:"monospace", fontSize:"10px", fontWeight:600, letterSpacing:"0.22em", textTransform:"uppercase", cursor:"pointer", borderRadius:"4px" }}>
@@ -209,7 +226,7 @@ export default function GalleryMatcher({ isPro=false, onUpgrade }) {
               {/* Entry */}
               <div style={{ padding:"20px", background:D.dark2, border:`1px solid ${D.borderMed}`, borderRadius:"4px", marginBottom:"20px" }}>
                 <div style={{ fontSize:"8px", letterSpacing:"0.3em", textTransform:"uppercase", color:gallery.openSubmissions?"#709070":"#c06050", marginBottom:"10px" }}>
-                  {gallery.openSubmissions ? "✓ Open to Submissions" : "✗ Referral / Invitation Only"}
+                  {gallery.openSubmissions ? T.openSub : T.closedSub}
                 </div>
                 <p style={{ fontSize:"12px", color:D.mid, lineHeight:1.7 }}>{gallery.entryNote}</p>
               </div>
