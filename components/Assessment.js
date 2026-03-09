@@ -35,7 +35,24 @@ const LOADING_STEPS = ["Reading exhibition signals","Evaluating artist statement
 const inp = { width:"100%", background:"rgba(10,10,10,0.04)", border:"1px solid rgba(10,10,10,0.12)", color:D.white, fontFamily:"monospace", fontSize:"12px", padding:"10px 12px", outline:"none", borderRadius:"4px" };
 const lbl = { display:"block", fontSize:"9px", letterSpacing:"0.28em", textTransform:"uppercase", color:D.mid, marginBottom:"8px" };
 
-export default function Assessment({ isPro=false, canRun=true, assessCount=0, onRun, onUpgrade }) {
+export default function Assessment({ isPro=false, canRun=true, assessCount=0, onRun, onUpgrade, lang="en" }) {
+  const T = lang==="es" ? {
+    engine:"Motor de Evaluación IA", discipline:"Disciplina", years:"Años Activo/a", solo:"Exposiciones Individuales",
+    group:"Exposiciones Colectivas", venue:"Lugar Más Alto", press:"Cobertura de Prensa", gallery:"Representación",
+    income:"Ingresos Anuales por Arte", statement:"Declaración de Artista", cv:"Notas de CV",
+    runBtn:"Evaluar mi Carrera →", upgradeBtn:"Actualizar para Evaluaciones Ilimitadas →",
+    freeUsed:"Evaluación gratuita usada — actualiza para más", loadMsg:"Cargando evaluación...",
+    strengths:"Fortalezas", gaps:"Brechas Críticas", statAnalysis:"Análisis del Statement",
+    missions:"Tus Misiones", toReach:"Para Llegar al Nivel", placeholder:"Describe tu práctica artística..."
+  } : {
+    engine:"AI Assessment Engine", discipline:T.discipline, years:"Years Active", solo:"Solo Exhibitions",
+    group:"Group Exhibitions", venue:"Highest Venue", press:"Press Coverage", gallery:"Gallery Representation",
+    income:"Annual Art Income", statement:"Artist Statement", cv:"CV Notes",
+    runBtn:T.runBtn, upgradeBtn:T.upgradeBtn,
+    freeUsed:"Free assessment used — upgrade for unlimited", loadMsg:"Running assessment...",
+    strengths:T.strengths, gaps:T.gaps, statAnalysis:"Statement Analysis",
+    missions:T.missions, toReach:"To Reach Level", placeholder:"Describe your artistic practice..."
+  };
   const [form, setForm] = useState({ disciplines:[], years:"", solo:"", group:"", venue:"", press:"", gallery:"", income:"", statement:"", cv:"" });
   const [loading, setLoading] = useState(false);
   const [loadingStep, setLoadingStep] = useState(0);
@@ -77,7 +94,7 @@ export default function Assessment({ isPro=false, canRun=true, assessCount=0, on
       {/* LEFT PANEL */}
       <div style={{ background:D.dark, borderRight:`1px solid ${D.border}`, boxShadow:"2px 0 20px rgba(0,0,0,0.04)", display:"flex", flexDirection:"column", height:"calc(100vh - 64px)", overflowY:"auto", position:"sticky", top:"64px" }}>
         <div style={{ padding:"20px 24px 16px", borderBottom:`1px solid ${D.border}` }}>
-          <div style={{ fontSize:"9px", letterSpacing:"0.4em", textTransform:"uppercase", color:D.mid, marginBottom:"12px" }}>AI Assessment Engine</div>
+          <div style={{ fontSize:"9px", letterSpacing:"0.4em", textTransform:"uppercase", color:D.mid, marginBottom:"12px" }}>{T.engine}</div>
           <div style={{ display:"flex", gap:"6px" }}>
             {[["emerging","Emerging"],["midcareer","Mid-Career"],["established","Established"]].map(([k,label])=>(
               <button key={k} onClick={()=>loadPreset(k)} style={{ flex:1, padding:"7px 4px", background:"transparent", border:`1px solid ${D.borderMed}`, color:D.mid, fontFamily:"monospace", fontSize:"9px", letterSpacing:"0.1em", textTransform:"uppercase", cursor:"pointer", borderRadius:"3px", transition:"all 0.15s" }}
@@ -202,7 +219,7 @@ export default function Assessment({ isPro=false, canRun=true, assessCount=0, on
 
             {/* Strengths & Gaps */}
             <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"16px", marginBottom:"16px" }}>
-              {[{title:"Strengths",items:result.strengths,ok:true},{title:"Critical Gaps",items:result.gaps,ok:false}].map(({title,items,ok})=>(
+              {[{title:T.strengths,items:result.strengths,ok:true},{title:T.gaps,items:result.gaps,ok:false}].map(({title,items,ok})=>(
                 <div key={title} style={{ padding:"24px", background:D.dark, border:`1px solid ${D.border}` }}>
                   <div style={{ fontSize:"9px", letterSpacing:"0.3em", textTransform:"uppercase", color:D.mid, marginBottom:"16px" }}>{title}</div>
                   {items.map((s,i)=>(
@@ -217,7 +234,7 @@ export default function Assessment({ isPro=false, canRun=true, assessCount=0, on
 
             {/* Statement */}
             <div style={{ padding:"24px", background:D.dark, border:`1px solid ${D.border}`, marginBottom:"16px" }}>
-              <div style={{ fontSize:"9px", letterSpacing:"0.3em", textTransform:"uppercase", color:D.mid, marginBottom:"16px" }}>Statement Analysis · {result.scores.statement}/100</div>
+              <div style={{ fontSize:"9px", letterSpacing:"0.3em", textTransform:"uppercase", color:D.mid, marginBottom:"16px" }}>{T.statAnalysis} · {result.scores.statement}/100</div>
               <div style={{ borderLeft:`2px solid ${D.borderMed}`, paddingLeft:"14px", marginBottom:"14px", fontFamily:"'Bodoni Moda',serif", fontSize:"15px", fontStyle:"italic", color:D.mid, lineHeight:1.7 }}>"{form.statement.slice(0,200)}{form.statement.length>200?"…":""}"</div>
               <div style={{ fontFamily:"'Bodoni Moda',serif", fontSize:"14px", fontStyle:"italic", color:D.mid, marginBottom:"12px" }}>{result.statement_critique.overall}</div>
               {result.statement_critique.good.map((t,i)=><div key={i} style={{ padding:"7px 10px", borderLeft:"2px solid #606060", marginBottom:"6px", fontSize:"11px", color:D.mid }}>✓ {t}</div>)}
