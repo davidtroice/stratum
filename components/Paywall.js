@@ -1,28 +1,20 @@
 import { useState } from "react";
 
-const D = {
-  bg:"#f2f2f0", white:"#ffffff", ink:"#1a1a18", mid:"#6b6b68", muted:"#9a9a96",
-  border:"rgba(26,26,24,0.09)", gold:"#c8a84b", goldL:"rgba(200,168,75,0.1)",
-  rust:"#c04020",
-};
-
-const LogoMark = ({ size=32 }) => (
-  <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
-    <rect x="8"  y="72" width="84" height="17" rx="5" fill="#1a1a18" opacity="0.85"/>
-    <rect x="15" y="53" width="70" height="14" rx="4" fill="#1a1a18" opacity="0.58"/>
-    <rect x="22" y="36" width="56" height="13" rx="4" fill="#1a1a18" opacity="0.34"/>
-    <rect x="29" y="21" width="42" height="11" rx="3" fill="#1a1a18" opacity="0.18"/>
-    <rect x="35" y="8"  width="30" height="10" rx="3" fill="#c8a84b"/>
+const Logo = ({ size=32 }) => (
+  <svg width={size} height={size} viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="4" y="8"  width="32" height="6" rx="1" fill="#0a0a0a" opacity="0.35"/>
+    <rect x="4" y="17" width="32" height="6" rx="1" fill="#0a0a0a" opacity="0.65"/>
+    <rect x="4" y="26" width="32" height="6" rx="1" fill="#0a0a0a"/>
   </svg>
 );
 
 const PRO_FEATURES = [
-  { icon:"∴", text:"Unlimited AI career assessments" },
-  { icon:"⊕", text:"Full opportunity database — 80+ residencies, grants, fairs worldwide" },
-  { icon:"◎", text:"Gallery matching + personalised outreach templates" },
-  { icon:"✍", text:"Portfolio & AI Statement Builder — upload your work, get a professional statement + CV" },
-  { icon:"🇲🇽", text:"Mexico & Latin America opportunities — FONCA, Casa Wabi, ZONAMACO and more" },
-  { icon:"→", text:"Priority mission list with XP tracking" },
+  { icon:"—", text:"Unlimited AI career assessments" },
+  { icon:"—", text:"Full opportunity database — 100+ residencies, grants, fairs worldwide" },
+  { icon:"—", text:"Gallery matching + personalised outreach templates" },
+  { icon:"—", text:"Portfolio & AI Statement Builder — upload your work, get a professional statement + CV" },
+  { icon:"—", text:"Mexico & Latin America opportunities — FONCA, Casa Wabi, ZONAMACO and more" },
+  { icon:"—", text:"Priority mission list with full career roadmap" },
 ];
 
 export default function Paywall({ feature, onClose, onUpgrade, loading }) {
@@ -32,56 +24,59 @@ export default function Paywall({ feature, onClose, onUpgrade, loading }) {
 
   const handleSubmit = () => {
     if (!email || !email.includes("@")) { setErr("Please enter a valid email."); return; }
-    setErr("");
-    onUpgrade(plan, email);
+    setErr(""); onUpgrade(plan, email);
   };
 
   return (
-    <div style={{ position:"fixed", inset:0, zIndex:200, display:"flex", alignItems:"center", justifyContent:"center", padding:"24px" }}
-      onClick={e => e.target === e.currentTarget && onClose()}>
-      <div style={{ position:"absolute", inset:0, background:"rgba(26,26,24,0.55)", backdropFilter:"blur(6px)" }} onClick={onClose} />
+    <div style={{ position:"fixed",inset:0,zIndex:200,display:"flex",alignItems:"center",justifyContent:"center",padding:"24px" }}
+      onClick={e=>e.target===e.currentTarget&&onClose()}>
+      <div style={{ position:"absolute",inset:0,background:"rgba(10,10,10,0.65)",backdropFilter:"blur(8px)" }} onClick={onClose}/>
 
-      <div style={{ position:"relative", zIndex:1, width:"100%", maxWidth:"520px", background:D.white, borderRadius:"16px", boxShadow:"0 32px 80px rgba(26,26,24,0.18)", overflow:"hidden" }}>
-        {/* Gold top bar */}
-        <div style={{ height:"4px", background:`linear-gradient(90deg, ${D.gold}, #e8c86a)` }} />
+      <div style={{ position:"relative",zIndex:1,width:"100%",maxWidth:"500px",background:"#ffffff",boxShadow:"0 40px 100px rgba(0,0,0,0.22)",overflow:"hidden" }}>
+        {/* Top border accent */}
+        <div style={{ height:"3px",background:"#0a0a0a" }}/>
 
         <div style={{ padding:"36px 36px 32px" }}>
           {/* Header */}
-          <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", marginBottom:"24px" }}>
-            <div style={{ display:"flex", alignItems:"center", gap:"12px" }}>
-              <LogoMark size={36} />
+          <div style={{ display:"flex",alignItems:"flex-start",justifyContent:"space-between",marginBottom:"28px" }}>
+            <div style={{ display:"flex",alignItems:"center",gap:"14px" }}>
+              <Logo size={32}/>
               <div>
-                <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"22px", fontWeight:400, color:D.ink }}>
-                  Str<span style={{ color:D.gold, fontStyle:"italic" }}>a</span>tum Pro
-                </div>
-                {feature && <div style={{ fontSize:"10px", color:D.muted, marginTop:"2px" }}>Unlock {feature}</div>}
+                <div style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"22px",fontWeight:600,color:"#0a0a0a",letterSpacing:"-0.01em" }}>Stratum Pro</div>
+                {feature && <div style={{ fontFamily:"'DM Mono',monospace",fontSize:"9px",letterSpacing:"0.18em",textTransform:"uppercase",color:"#888884",marginTop:"3px" }}>Unlock {feature}</div>}
               </div>
             </div>
-            <button onClick={onClose} style={{ background:"none", border:"none", color:D.muted, fontSize:"22px", cursor:"pointer", lineHeight:1, padding:"2px" }}>×</button>
+            <button onClick={onClose} style={{ background:"none",border:"none",color:"#888884",fontSize:"20px",cursor:"pointer",lineHeight:1,padding:"2px",marginTop:"-2px" }}>×</button>
           </div>
 
+          {/* Divider */}
+          <div style={{ height:"1px",background:"rgba(10,10,10,0.1)",marginBottom:"24px" }}/>
+
           {/* Features */}
-          <div style={{ marginBottom:"28px", display:"flex", flexDirection:"column", gap:"10px" }}>
-            {PRO_FEATURES.map((f, i) => (
-              <div key={i} style={{ display:"flex", gap:"12px", alignItems:"flex-start" }}>
-                <span style={{ color:D.gold, fontSize:"14px", flexShrink:0, marginTop:"1px" }}>{f.icon}</span>
-                <span style={{ fontSize:"12px", color:D.mid, lineHeight:1.5 }}>{f.text}</span>
+          <div style={{ marginBottom:"28px",display:"flex",flexDirection:"column",gap:"9px" }}>
+            {PRO_FEATURES.map((f,i)=>(
+              <div key={i} style={{ display:"flex",gap:"14px",alignItems:"flex-start" }}>
+                <span style={{ color:"#0a0a0a",fontSize:"12px",flexShrink:0,marginTop:"1px",fontFamily:"'DM Mono',monospace",opacity:0.4 }}>{f.icon}</span>
+                <span style={{ fontFamily:"'DM Mono',monospace",fontSize:"11px",color:"#555552",lineHeight:1.6,letterSpacing:"0.01em" }}>{f.text}</span>
               </div>
             ))}
           </div>
 
+          {/* Divider */}
+          <div style={{ height:"1px",background:"rgba(10,10,10,0.08)",marginBottom:"20px" }}/>
+
           {/* Plan toggle */}
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"8px", marginBottom:"20px" }}>
+          <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px",marginBottom:"16px" }}>
             {[
-              { id:"annual",  label:"Annual", price:"$1,980 MXN/yr", saving:"save 31%" },
-              { id:"monthly", label:"Monthly",price:"$240 MXN/mo",   saving:null },
-            ].map(p => (
-              <button key={p.id} onClick={()=>setPlan(p.id)} style={{ padding:"12px", border:`1.5px solid ${plan===p.id ? D.gold : D.border}`, borderRadius:"8px", background: plan===p.id ? D.goldL : "transparent", cursor:"pointer", textAlign:"left", transition:"all 0.15s" }}>
-                <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:"4px" }}>
-                  <span style={{ fontSize:"10px", fontWeight:600, color: plan===p.id ? D.gold : D.ink, fontFamily:"monospace", letterSpacing:"0.1em" }}>{p.label}</span>
-                  {p.saving && <span style={{ fontSize:"8px", background:D.gold, color:"#fff", padding:"2px 6px", borderRadius:"3px" }}>{p.saving}</span>}
+              { id:"annual",  label:"Annual",  price:"$1,980 MXN / yr", saving:"save 31%" },
+              { id:"monthly", label:"Monthly", price:"$240 MXN / mo",   saving:null },
+            ].map(p=>(
+              <button key={p.id} onClick={()=>setPlan(p.id)} style={{ padding:"14px",border:`1.5px solid ${plan===p.id?"#0a0a0a":"rgba(10,10,10,0.12)"}`,background:plan===p.id?"#0a0a0a":"transparent",cursor:"pointer",textAlign:"left",transition:"all 0.15s" }}>
+                <div style={{ display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"5px" }}>
+                  <span style={{ fontFamily:"'DM Mono',monospace",fontSize:"9px",fontWeight:600,color:plan===p.id?"#ffffff":"#0a0a0a",letterSpacing:"0.12em",textTransform:"uppercase" }}>{p.label}</span>
+                  {p.saving&&<span style={{ fontFamily:"'DM Mono',monospace",fontSize:"8px",background:plan===p.id?"rgba(255,255,255,0.15)":"rgba(10,10,10,0.08)",color:plan===p.id?"#ffffff":"#555552",padding:"2px 6px",letterSpacing:"0.05em" }}>{p.saving}</span>}
                 </div>
-                <div style={{ fontSize:"13px", fontFamily:"'Cormorant Garamond',serif", color: plan===p.id ? D.ink : D.mid }}>{p.price}</div>
+                <div style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"15px",color:plan===p.id?"#ffffff":"#555552",fontWeight:400 }}>{p.price}</div>
               </button>
             ))}
           </div>
@@ -92,17 +87,17 @@ export default function Paywall({ feature, onClose, onUpgrade, loading }) {
             placeholder="Your email address"
             value={email}
             onChange={e=>{setEmail(e.target.value);setErr("");}}
-            style={{ width:"100%", padding:"12px 14px", border:`1px solid ${err ? D.rust : D.border}`, borderRadius:"8px", fontFamily:"monospace", fontSize:"12px", color:D.ink, background:D.bg, outline:"none", marginBottom:"8px" }}
+            style={{ width:"100%",padding:"12px 14px",border:`1px solid ${err?"#c04020":"rgba(10,10,10,0.15)"}`,fontFamily:"'DM Mono',monospace",fontSize:"11px",color:"#0a0a0a",background:"#f7f6f2",outline:"none",marginBottom:"8px",letterSpacing:"0.02em" }}
           />
-          {err && <div style={{ fontSize:"10px", color:D.rust, marginBottom:"8px" }}>{err}</div>}
+          {err && <div style={{ fontFamily:"'DM Mono',monospace",fontSize:"10px",color:"#c04020",marginBottom:"8px",letterSpacing:"0.05em" }}>{err}</div>}
 
           {/* CTA */}
           <button onClick={handleSubmit} disabled={loading}
-            style={{ width:"100%", padding:"15px", background: loading ? D.muted : D.gold, border:"none", borderRadius:"8px", color:"#fff", fontFamily:"monospace", fontSize:"11px", fontWeight:600, letterSpacing:"0.22em", textTransform:"uppercase", cursor: loading ? "not-allowed" : "pointer", boxShadow:"0 6px 20px rgba(200,168,75,0.3)", transition:"all 0.2s" }}>
-            {loading ? "Redirecting…" : `Unlock Pro — ${plan === "annual" ? "$1,980 MXN/yr" : "$240 MXN/mo"} →`}
+            style={{ width:"100%",padding:"16px",background:loading?"#888884":"#0a0a0a",border:"none",color:"#ffffff",fontFamily:"'DM Mono',monospace",fontSize:"11px",fontWeight:600,letterSpacing:"0.22em",textTransform:"uppercase",cursor:loading?"not-allowed":"pointer",transition:"opacity 0.2s" }}>
+            {loading?"Redirecting…":`Unlock Pro — ${plan==="annual"?"$1,980 MXN/yr":"$240 MXN/mo"} →`}
           </button>
 
-          <div style={{ textAlign:"center", marginTop:"12px", fontSize:"9px", color:D.muted, letterSpacing:"0.1em" }}>
+          <div style={{ textAlign:"center",marginTop:"14px",fontFamily:"'DM Mono',monospace",fontSize:"9px",color:"#888884",letterSpacing:"0.08em" }}>
             Secure payment via Stripe · Cancel anytime
           </div>
         </div>
