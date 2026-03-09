@@ -45,13 +45,13 @@ export default function Assessment({ isPro=false, canRun=true, assessCount=0, on
     strengths:"Fortalezas", gaps:"Brechas Críticas", statAnalysis:"Análisis del Statement",
     missions:"Tus Misiones", toReach:"Para Llegar al Nivel", placeholder:"Describe tu práctica artística..."
   } : {
-    engine:"AI Assessment Engine", discipline:T.discipline, years:"Years Active", solo:"Solo Exhibitions",
+    engine:"AI Assessment Engine", discipline:"Discipline", years:"Years Active", solo:"Solo Exhibitions",
     group:"Group Exhibitions", venue:"Highest Venue", press:"Press Coverage", gallery:"Gallery Representation",
     income:"Annual Art Income", statement:"Artist Statement", cv:"CV Notes",
-    runBtn:T.runBtn, upgradeBtn:T.upgradeBtn,
+    runBtn:"Assess My Career →", upgradeBtn:"Upgrade for Unlimited Assessments →",
     freeUsed:"Free assessment used — upgrade for unlimited", loadMsg:"Running assessment...",
-    strengths:T.strengths, gaps:T.gaps, statAnalysis:"Statement Analysis",
-    missions:T.missions, toReach:"To Reach Level", placeholder:"Describe your artistic practice..."
+    strengths:"Strengths", gaps:"Critical Gaps", statAnalysis:"Statement Analysis",
+    missions:"Your Missions", toReach:"To Reach Level", placeholder:"Describe your artistic practice..."
   };
   const [form, setForm] = useState({ disciplines:[], years:"", solo:"", group:"", venue:"", press:"", gallery:"", income:"", statement:"", cv:"" });
   const [loading, setLoading] = useState(false);
