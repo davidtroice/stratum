@@ -157,7 +157,7 @@ export default function Landing({ onNavigate, isPro, onUpgrade }) {
           <button className="btn btn-o" onClick={()=>onNavigate("assessment")} style={{ padding:"8px 18px",borderRadius:"4px",fontFamily:"monospace",fontSize:"9px",letterSpacing:"0.18em",textTransform:"uppercase" }}>{lang==="en"?"Assessment":"Evaluación"}</button>
           {isPro
             ? <span style={{ padding:"8px 16px",background:"rgba(245,244,240,0.08)",border:"1px solid rgba(245,244,240,0.2)",color:D.accent,fontFamily:"monospace",fontSize:"9px",letterSpacing:"0.15em",borderRadius:"4px" }}>✦ PRO</span>
-            : <button className="btn btn-g" onClick={()=>onNavigate("assessment")} style={{ padding:"8px 20px",fontFamily:"monospace",fontSize:"9px",fontWeight:600,letterSpacing:"0.18em",textTransform:"uppercase",borderRadius:"4px",boxShadow:none }}>{T.cta1}</button>
+            : <button className="btn btn-g" onClick={()=>onNavigate("assessment")} style={{ padding:"8px 20px",fontFamily:"monospace",fontSize:"9px",fontWeight:600,letterSpacing:"0.18em",textTransform:"uppercase",borderRadius:"4px",boxShadow:"none" }}>{T.cta1}</button>
           }
         </div>
       </nav>
