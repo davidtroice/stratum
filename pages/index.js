@@ -27,6 +27,7 @@ const Logo = ({ size=26, color="#0a0a0a" }) => (
 
 export default function Index() {
   const [screen, setScreen]           = useState("landing");
+  const [lang, setLang]               = useState(() => typeof navigator!=="undefined" && navigator.language?.startsWith("es") ? "es" : "en");
   const [isPro, setIsPro]             = useState(false);
   const [userEmail, setUserEmail]     = useState("");
   const [assessCount, setAssessCount] = useState(0);
@@ -95,7 +96,7 @@ export default function Index() {
         <nav style={{ position:"fixed",top:0,left:0,right:0,zIndex:100,padding:"0 40px",height:"64px",display:"flex",alignItems:"center",justifyContent:"space-between",background:"rgba(255,255,255,0.97)",backdropFilter:"blur(20px)",borderBottom:"1px solid rgba(10,10,10,0.1)" }}>
           <button onClick={()=>setScreen("landing")} style={{ display:"flex",alignItems:"center",gap:"10px",background:"none",border:"none",cursor:"pointer" }}>
             <Logo size={26} color="#0a0a0a" />
-            <span style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"20px",fontWeight:600,color:"#0a0a0a",letterSpacing:"-0.01em" }}>Stratum</span>
+            <span style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"20px",fontWeight:400,color:"#0a0a0a",letterSpacing:"-0.01em" }}>Stratum</span>
           </button>
           <div style={{ display:"flex",gap:"4px",alignItems:"center" }}>
             {NAV.map(n => {
@@ -108,24 +109,31 @@ export default function Index() {
               );
             })}
           </div>
-          {isPro ? (
-            <button onClick={handleManagePro} style={{ padding:"7px 16px",background:"transparent",border:"1px solid rgba(10,10,10,0.2)",color:"#0a0a0a",fontFamily:"'DM Mono',monospace",fontSize:"9px",letterSpacing:"0.15em",textTransform:"uppercase",cursor:"pointer" }}>
-              ✦ Pro
-            </button>
-          ) : (
-            <button onClick={()=>setPaywall({feature:null})} style={{ padding:"8px 20px",background:"#0a0a0a",border:"none",color:"#ffffff",fontFamily:"'DM Mono',monospace",fontSize:"9px",fontWeight:600,letterSpacing:"0.18em",textTransform:"uppercase",cursor:"pointer" }}>
-              Upgrade →
-            </button>
-          )}
+          <div style={{ display:"flex",gap:"8px",alignItems:"center" }}>
+            <div style={{ display:"flex",border:"1px solid rgba(10,10,10,0.12)",overflow:"hidden" }}>
+              {["en","es"].map(l=>(
+                <button key={l} onClick={()=>setLang(l)} style={{ padding:"5px 11px",background:lang===l?"#0a0a0a":"transparent",color:lang===l?"#ffffff":"#888884",fontFamily:"'DM Mono',monospace",fontSize:"9px",fontWeight:600,letterSpacing:"0.1em",border:"none",cursor:"pointer",transition:"all 0.15s" }}>{l.toUpperCase()}</button>
+              ))}
+            </div>
+            {isPro ? (
+              <button onClick={handleManagePro} style={{ padding:"7px 16px",background:"transparent",border:"1px solid rgba(10,10,10,0.2)",color:"#0a0a0a",fontFamily:"'DM Mono',monospace",fontSize:"9px",letterSpacing:"0.15em",textTransform:"uppercase",cursor:"pointer" }}>
+                ✦ Pro
+              </button>
+            ) : (
+              <button onClick={()=>setPaywall({feature:null})} style={{ padding:"8px 20px",background:"#0a0a0a",border:"none",color:"#ffffff",fontFamily:"'DM Mono',monospace",fontSize:"9px",fontWeight:600,letterSpacing:"0.18em",textTransform:"uppercase",cursor:"pointer" }}>
+                Upgrade →
+              </button>
+            )}
+          </div>
         </nav>
       )}
 
-      {screen==="landing"       && <Landing onNavigate={navigate} isPro={isPro} onUpgrade={()=>setPaywall({feature:null})} />}
-      {screen==="assessment"    && <Assessment isPro={isPro} canRun={canRunAssessment} assessCount={assessCount} onRun={onAssessmentRun} onUpgrade={()=>setPaywall({feature:"Unlimited Assessments"})} />}
-      {screen==="opportunities" && <OpportunityDatabase isPro={isPro} onUpgrade={()=>setPaywall({feature:"Full Opportunity Database"})} />}
-      {screen==="portfolio"     && <PortfolioBuilder />}
-      {screen==="galleries"     && <GalleryMatcher isPro={isPro} onUpgrade={()=>setPaywall({feature:"Gallery Matching"})} />}
-      {paywall && <Paywall feature={paywall.feature} onClose={()=>setPaywall(null)} onUpgrade={handleUpgrade} loading={checkoutLoading} />}
+      {screen==="landing"       && <Landing onNavigate={navigate} isPro={isPro} onUpgrade={()=>setPaywall({feature:null})} lang={lang} setLang={setLang} />}
+      {screen==="assessment"    && <Assessment isPro={isPro} canRun={canRunAssessment} assessCount={assessCount} onRun={onAssessmentRun} onUpgrade={()=>setPaywall({feature:"Unlimited Assessments"})} lang={lang} />}
+      {screen==="opportunities" && <OpportunityDatabase isPro={isPro} onUpgrade={()=>setPaywall({feature:"Full Opportunity Database"})} lang={lang} />}
+      {screen==="portfolio"     && <PortfolioBuilder lang={lang} />}
+      {screen==="galleries"     && <GalleryMatcher isPro={isPro} onUpgrade={()=>setPaywall({feature:"Gallery Matching"})} lang={lang} />}
+      {paywall && <Paywall feature={paywall.feature} onClose={()=>setPaywall(null)} onUpgrade={handleUpgrade} loading={checkoutLoading} lang={lang} />}
     </div>
   );
 }
