@@ -121,7 +121,24 @@ const OPPORTUNITIES = [
   { id:103, type:"grant",     name:"Prix de Rome Netherlands", org:"Mondriaan Fund", city:"Amsterdam", country:"Netherlands", region:"europe", duration:"Award + Residency", stipend:true, fee:false, disciplines:["all"], levels:[2,3], deadline:"Annual", description:"Prestigious Dutch award for emerging artists. €40,000 and a research residency abroad." },
 ];
 
-export default function OpportunityDatabase({ isPro=false, onUpgrade }) {
+export default function OpportunityDatabase({ isPro=false, onUpgrade, lang="en" }) {
+  const T = lang==="es" ? {
+    title:"Base de Datos", heading:"Oportunidades", subFull:"Base completa — filtrada por nivel y región.", subLocked:(n)=>`Mostrando 5 de ${n}. Actualiza para acceso completo.`,
+    filterTypes:[["all","Todos"],["residency","Residencia"],["grant","Beca"],["exhibition","Convocatoria"],["fair","Feria"],["biennial","Bienal"]],
+    filterRegions:[["all","Todas"],["mexico","México"],["latin-america","América Latina"],["north-america","Norte América"],["europe","Europa"],["international","Internacional"]],
+    search:"Buscar oportunidades...", levels:"Todos los Niveles", level:"Nivel",
+    duration:"Duración", deadline:"Fecha límite", stipend:"BECA INCLUIDA",
+    moreUnlocked:(n)=>`${n} oportunidades más con Pro.`, unlockBtn:"Desbloquear Base Completa →",
+    noResults:"Sin resultados con estos filtros.", visitSite:"Ver sitio →"
+  } : {
+    title:"Opportunity Database", heading:"Opportunities", subFull:"Full database — filtered for your level and region.", subLocked:(n)=>`Showing 5 of ${n}. Upgrade for full access.`,
+    filterTypes:[["all","All Types"],["residency","Residency"],["grant","Grant"],["exhibition","Open Call"],["fair","Art Fair"],["biennial","Biennial"]],
+    filterRegions:[["all","All Regions"],["mexico","México"],["latin-america","Latin America"],["north-america","North America"],["europe","Europe"],["international","International"]],
+    search:"Search opportunities...", levels:"All Levels", level:"Level",
+    duration:"Duration", deadline:"Deadline", stipend:"STIPEND",
+    moreUnlocked:(n)=>`${n} more opportunities unlocked with Pro.`, unlockBtn:"Unlock Full Database →",
+    noResults:T.noResults, visitSite:"Visit site →"
+  };
   const [typeF,  setTypeF]  = useState("all");
   const [regionF,setRegionF]= useState("all");
   const [levelF, setLevelF] = useState("all");
@@ -156,12 +173,12 @@ export default function OpportunityDatabase({ isPro=false, onUpgrade }) {
       {/* Header */}
       <div style={{ padding:"48px 48px 32px", borderBottom:`1px solid ${D.border}` }}>
         <div style={{ maxWidth:"1100px", margin:"0 auto" }}>
-          <div style={{ fontSize:"9px", letterSpacing:"0.5em", textTransform:"uppercase", color:D.mid, marginBottom:"12px" }}>Opportunity Database</div>
+          <div style={{ fontSize:"9px", letterSpacing:"0.5em", textTransform:"uppercase", color:D.mid, marginBottom:"12px" }}>{T.title}</div>
           <h1 style={{ fontFamily:"'Bodoni Moda',serif", fontSize:"clamp(36px,5vw,64px)", fontWeight:600, color:D.white, lineHeight:1, textTransform:"uppercase", marginBottom:"8px" }}>
-            {filtered.length} Opportunities.
+{filtered.length} {T.heading}.
           </h1>
           <p style={{ fontFamily:"'Bodoni Moda',serif", fontSize:"18px", color:D.mid, fontStyle:"italic" }}>
-            {isPro ? "Full database — filtered for your level and region." : `Showing 5 of ${filtered.length}. Upgrade for full access.`}
+            {isPro ? T.subFull : T.subLocked(filtered.length)}
           </p>
         </div>
       </div>
@@ -169,21 +186,21 @@ export default function OpportunityDatabase({ isPro=false, onUpgrade }) {
       <div style={{ maxWidth:"1100px", margin:"0 auto", padding:"32px 48px" }}>
         {/* Filters */}
         <div style={{ display:"flex", gap:"8px", flexWrap:"wrap", marginBottom:"12px" }}>
-          {[["all","All Types"],["residency","Residency"],["grant","Grant"],["exhibition","Open Call"],["fair","Art Fair"],["biennial","Biennial"]].map(([v,l]) => (
+          {T.filterTypes.map(([v,l]) => (
             <FilterBtn key={v} val={v} curr={typeF} set={setTypeF} label={l}/>
           ))}
         </div>
         <div style={{ display:"flex", gap:"8px", flexWrap:"wrap", marginBottom:"12px" }}>
-          {[["all","All Regions"],["mexico","México"],["latin-america","Latin America"],["north-america","North America"],["europe","Europe"],["international","International"]].map(([v,l]) => (
+          {T.filterRegions.map(([v,l]) => (
             <FilterBtn key={v} val={v} curr={regionF} set={setRegionF} label={l}/>
           ))}
         </div>
         <div style={{ display:"flex", gap:"8px", flexWrap:"wrap", marginBottom:"24px" }}>
-          {[["all","All Levels"],["1","Level 1"],["2","Level 2"],["3","Level 3"],["4","Level 4"],["5","Level 5"]].map(([v,l]) => (
+          {[["all",T.levels],["1","Level 1"],["2","Level 2"],["3","Level 3"],["4","Level 4"],["5","Level 5"]].map(([v,l]) => (
             <FilterBtn key={v} val={v} curr={levelF} set={setLevelF} label={l}/>
           ))}
         </div>
-        <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search opportunities..." style={{ width:"100%", padding:"12px 16px", background:"rgba(10,10,10,0.04)", border:`1px solid ${D.border}`, color:D.white, fontFamily:"monospace", fontSize:"12px", outline:"none", borderRadius:"4px", marginBottom:"32px" }}/>
+        <input value={search} onChange={e=>setSearch(e.target.value)} placeholder={T.search} style={{ width:"100%", padding:"12px 16px", background:"rgba(10,10,10,0.04)", border:`1px solid ${D.border}`, color:D.white, fontFamily:"monospace", fontSize:"12px", outline:"none", borderRadius:"4px", marginBottom:"32px" }}/>
 
         {/* List */}
         <div style={{ display:"flex", flexDirection:"column", gap:"1px", background:D.border }}>
@@ -209,9 +226,20 @@ export default function OpportunityDatabase({ isPro=false, onUpgrade }) {
                 {isOpen && (
                   <div style={{ padding:"0 24px 20px", borderTop:`1px solid ${D.border}` }}>
                     <p style={{ fontFamily:"'Bodoni Moda',serif", fontSize:"16px", color:D.mid, lineHeight:1.7, marginTop:"16px", marginBottom:"12px" }}>{o.description}</p>
-                    <div style={{ display:"flex", gap:"8px", flexWrap:"wrap" }}>
-                      {o.levels.map(l => <span key={l} style={{ fontSize:"9px", padding:"3px 8px", border:`1px solid ${D.border}`, color:D.mid, borderRadius:"3px" }}>Level {l}</span>)}
+                    <div style={{ display:"flex", gap:"8px", flexWrap:"wrap", alignItems:"center", justifyContent:"space-between" }}>
+                    <div style={{ display:"flex", gap:"6px", flexWrap:"wrap" }}>
+                      {o.levels.map(l => <span key={l} style={{ fontSize:"9px", padding:"3px 8px", border:`1px solid ${D.border}`, color:D.mid, borderRadius:"3px" }}>{T.level} {l}</span>)}
                     </div>
+                    {ORG_URLS[o.org] && (
+                      <a href={ORG_URLS[o.org]} target="_blank" rel="noopener noreferrer"
+                        onClick={e=>e.stopPropagation()}
+                        style={{ fontFamily:"'DM Mono',monospace", fontSize:"9px", letterSpacing:"0.15em", textTransform:"uppercase", color:D.white, border:`1px solid ${D.borderMed}`, padding:"5px 12px", textDecoration:"none", transition:"all 0.15s" }}
+                        onMouseEnter={e=>{e.target.style.background="#0a0a0a";e.target.style.color="#ffffff";}}
+                        onMouseLeave={e=>{e.target.style.background="transparent";e.target.style.color=D.white;}}>
+                        {T.visitSite}
+                      </a>
+                    )}
+                  </div>
                   </div>
                 )}
               </div>
@@ -223,7 +251,7 @@ export default function OpportunityDatabase({ isPro=false, onUpgrade }) {
         {locked && (
           <div style={{ marginTop:"1px", background:D.dark, padding:"48px 32px", textAlign:"center", border:`1px solid ${D.border}` }}>
             <div style={{ fontFamily:"'Bodoni Moda',serif", fontSize:"28px", fontStyle:"italic", color:D.white, marginBottom:"12px" }}>
-              {filtered.length - 5} more opportunities unlocked with Pro.
+              {T.moreUnlocked(filtered.length - 5)}
             </div>
             <p style={{ fontSize:"11px", color:D.mid, marginBottom:"24px" }}>Residencies, grants, open calls, fairs — filtered for your level.</p>
             <button onClick={onUpgrade} style={{ padding:"14px 40px", background:D.white, border:"1px solid rgba(10,10,10,0.8)", color:D.black, fontFamily:"monospace", fontSize:"10px", fontWeight:600, letterSpacing:"0.22em", textTransform:"uppercase", cursor:"pointer", borderRadius:"4px" }}>
