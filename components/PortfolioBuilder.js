@@ -42,16 +42,16 @@ export default function PortfolioBuilder({ lang="en" }) {
     visualAnalysis:"Análisis Visual", fullStatement:"Statement Completo", shortStatement:"Statement Corto",
     cvStructure:"Estructura de CV", pitches:"Propuestas para Galerías"
   } : {
-    uploadTitle:"T.uploadTitle", uploadDesc:"Upload 3–10 images of your recent work.",
-    contextTitle:"T.contextTitle", contextDesc:"Tell us about your practice.",
-    genTitle:"T.genTitle", genDesc:"Analysing visual themes and conceptual territory.",
-    discipline:T.discipline, level:T.level, tone:T.tone,
+    uploadTitle:"Upload your work.", uploadDesc:"Upload 3–10 images of your recent work.",
+    contextTitle:"Your context.", contextDesc:"Tell us about your practice.",
+    genTitle:"Reading your work…", genDesc:"Analysing visual themes and conceptual territory.",
+    discipline:"Primary Discipline", level:"Career Level", tone:"Statement Tone",
     existing:"Existing Statement (optional)", cvNotes:"CV Notes", extra:"Anything else (optional)",
-    continueBtn:(n)=>`Continue with ${n} image${n!==1?"s":""}`, skipBtn:T.skipBtn,
-    generateBtn:T.generateBtn, backBtn:T.backBtn, regenBtn:T.regenBtn,
-    copyAll:"Copy Statement + Short Statement", copied:T.copied, copy:T.copy,
-    visualAnalysis:T.visualAnalysis, fullStatement:T.fullStatement, shortStatement:T.shortStatement,
-    cvStructure:T.cvStructure, pitches:T.pitches
+    continueBtn:(n)=>`Continue with ${n} image${n!==1?"s":""}`, skipBtn:"Skip — No Images",
+    generateBtn:"Generate Statement & CV →", backBtn:"← Back", regenBtn:"← Regenerate",
+    copyAll:"Copy Statement + Short Statement", copied:"Copied ✓", copy:"Copy",
+    visualAnalysis:"Visual Analysis", fullStatement:"Full Statement", shortStatement:"Short Statement",
+    cvStructure:"CV Structure", pitches:"Gallery Pitches"
   };
   const [step, setStep]           = useState("upload");
   const [images, setImages]       = useState([]);
