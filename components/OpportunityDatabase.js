@@ -137,7 +137,7 @@ export default function OpportunityDatabase({ isPro=false, onUpgrade, lang="en" 
     search:"Search opportunities...", levels:"All Levels", level:"Level",
     duration:"Duration", deadline:"Deadline", stipend:"STIPEND",
     moreUnlocked:(n)=>`${n} more opportunities unlocked with Pro.`, unlockBtn:"Unlock Full Database →",
-    noResults:T.noResults, visitSite:"Visit site →"
+    noResults:"No opportunities match your filters.", visitSite:"Visit site →"
   };
   const [typeF,  setTypeF]  = useState("all");
   const [regionF,setRegionF]= useState("all");
