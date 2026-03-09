@@ -181,8 +181,8 @@ export default function Landing({ onNavigate, isPro, onUpgrade }) {
         <div className="stat-grid" style={{ display:"grid",gridTemplateColumns:"repeat(4,1fr)" }}>
           {T.stats.map(([n,l],i)=>(
             <div key={l} style={{ padding:"32px 20px",textAlign:"center",borderRight:i<3?"1px solid rgba(255,255,255,0.08)":"none" }}>
-              <div style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"48px",fontWeight:600,color:D.white,lineHeight:1 }}>{n}</div>
-              <div style={{ fontSize:"9px",letterSpacing:"0.2em",textTransform:"uppercase",color:D.mid,marginTop:"6px" }}>{l}</div>
+              <div style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"48px",fontWeight:600,color:"#ffffff",lineHeight:1 }}>{n}</div>
+              <div style={{ fontFamily:"'DM Mono',monospace",fontSize:"9px",letterSpacing:"0.2em",textTransform:"uppercase",color:"rgba(255,255,255,0.5)",marginTop:"6px" }}>{l}</div>
             </div>
           ))}
         </div>
