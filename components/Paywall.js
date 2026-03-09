@@ -13,12 +13,12 @@ const Logo = ({ size=32 }) => (
 export default function Paywall({ feature, onClose, onUpgrade, loading, lang="en" }) {
   const TL = lang==="es" ? {
     title:"Stratum Pro", unlock:"Desbloquear", annual:"Anual", monthly:"Mensual", save:"ahorra 31%",
-    email:"Tu correo electrónico", cta:(plan)=>plan==="annual"?"Desbloquear Pro — $1,980 MXN/año →":"Desbloquear Pro — $240 MXN/mes →",
+    email:"Tu correo electrónico", cta:(plan)=>plan==="annual"?"Desbloquear Pro — $99 USD/año →":"Desbloquear Pro — $12 USD/mes →",
     secure:"Pago seguro vía Stripe · Cancela cuando quieras", err:"Por favor ingresa un correo válido.", loading:"Redirigiendo…",
     features:["Evaluaciones de carrera IA ilimitadas","Base de datos completa — 100+ residencias, becas, ferias mundiales","Matching de galerías + plantillas de contacto personalizadas","Portfolio y Generador de Statement IA","Oportunidades México y LATAM — FONCA, Casa Wabi, ZONAMACO y más","Lista de misiones prioritarias con hoja de ruta completa"]
   } : {
     title:"Stratum Pro", unlock:"Unlock", annual:"Annual", monthly:"Monthly", save:"save 31%",
-    email:"Your email address", cta:(plan)=>plan==="annual"?"Unlock Pro — $1,980 MXN/yr →":"Unlock Pro — $240 MXN/mo →",
+    email:"Your email address", cta:(plan)=>plan==="annual"?"Unlock Pro — $99 USD/yr →":"Unlock Pro — $12 USD/mo →",
     secure:"Secure payment via Stripe · Cancel anytime", err:"Please enter a valid email.", loading:"Redirecting…",
     features:["Unlimited AI career assessments","Full opportunity database — 100+ residencies, grants, fairs worldwide","Gallery matching + personalised outreach templates","Portfolio & AI Statement Builder","Mexico & Latin America opportunities — FONCA, Casa Wabi, ZONAMACO and more","Priority mission list with full career roadmap"]
   };
@@ -72,8 +72,8 @@ export default function Paywall({ feature, onClose, onUpgrade, loading, lang="en
           {/* Plan toggle */}
           <div style={{ display:"grid",gridTemplateColumns:"1fr 1fr",gap:"8px",marginBottom:"16px" }}>
             {[
-              { id:"annual",  label:"Annual",  price:"$1,980 MXN / yr", saving:"save 31%" },
-              { id:"monthly", label:"Monthly", price:"$240 MXN / mo",   saving:null },
+              { id:"annual",  label:"Annual",  price:"$99 USD / yr", saving:"save 31%" },
+              { id:"monthly", label:"Monthly", price:"$12 USD / mo",   saving:null },
             ].map(p=>(
               <button key={p.id} onClick={()=>setPlan(p.id)} style={{ padding:"14px",border:`1.5px solid ${plan===p.id?"#0a0a0a":"rgba(10,10,10,0.12)"}`,background:plan===p.id?"#0a0a0a":"transparent",cursor:"pointer",textAlign:"left",transition:"all 0.15s" }}>
                 <div style={{ display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"5px" }}>
