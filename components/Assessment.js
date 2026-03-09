@@ -66,7 +66,7 @@ export default function Assessment({ isPro=false, canRun=true, assessCount=0, on
   return (
     <div style={{ display:"grid", gridTemplateColumns:"360px 1fr", minHeight:"100vh", fontFamily:"monospace", background:D.black, color:D.white, paddingTop:"64px" }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=DM+Mono:wght@300;400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;0,6..96,700;0,6..96,900;1,6..96,400;1,6..96,600&family=DM+Mono:wght@300;400;500&display=swap');
         @keyframes spin{to{transform:rotate(360deg)}}
         select option{background:#111111}
         ::-webkit-scrollbar{width:4px}
@@ -151,7 +151,7 @@ export default function Assessment({ isPro=false, canRun=true, assessCount=0, on
       <div style={{ padding:"40px 48px", overflowY:"auto" }}>
         {!loading&&!result&&(
           <div style={{ height:"100%", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", minHeight:"60vh", textAlign:"center", opacity:0.25 }}>
-            <div style={{ fontFamily:"'Playfair Display',serif", fontSize:"100px", fontStyle:"italic", color:D.white, lineHeight:1, marginBottom:"16px" }}>∴</div>
+            <div style={{ fontFamily:"'Bodoni Moda',serif", fontSize:"100px", fontStyle:"italic", color:D.white, lineHeight:1, marginBottom:"16px" }}>∴</div>
             <div style={{ fontSize:"10px", letterSpacing:"0.3em", textTransform:"uppercase", color:D.mid, lineHeight:2 }}>Load a preset or fill in your details<br/>then run the assessment</div>
           </div>
         )}
@@ -177,11 +177,11 @@ export default function Assessment({ isPro=false, canRun=true, assessCount=0, on
             <div style={{ padding:"32px", border:`1px solid ${D.borderMed}`, background:D.dark, marginBottom:"20px", position:"relative", borderTop:`3px solid ${lc}` }}>
               <div style={{ display:"flex", gap:"28px", alignItems:"center" }}>
                 <div style={{ width:"80px", height:"80px", borderRadius:"50%", border:`2px solid ${lc}`, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
-                  <span style={{ fontFamily:"'Playfair Display',serif", fontSize:"42px", fontWeight:300, color:lc }}>{result.level}</span>
+                  <span style={{ fontFamily:"'Bodoni Moda',serif", fontSize:"42px", fontWeight:300, color:lc }}>{result.level}</span>
                 </div>
                 <div>
                   <div style={{ fontSize:"9px", letterSpacing:"0.3em", textTransform:"uppercase", color:lc, marginBottom:"6px" }}>Level {result.level} of 5 · {result.level_subtitle}</div>
-                  <div style={{ fontFamily:"'Playfair Display',serif", fontSize:"32px", fontWeight:300, fontStyle:"italic", color:D.white, lineHeight:1.1, marginBottom:"8px" }}>{result.level_name}</div>
+                  <div style={{ fontFamily:"'Bodoni Moda',serif", fontSize:"32px", fontWeight:300, fontStyle:"italic", color:D.white, lineHeight:1.1, marginBottom:"8px" }}>{result.level_name}</div>
                   <div style={{ fontSize:"13px", color:D.mid, lineHeight:1.7 }}>{result.level_summary}</div>
                 </div>
               </div>
@@ -191,7 +191,7 @@ export default function Assessment({ isPro=false, canRun=true, assessCount=0, on
             <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:"1px", background:D.border, marginBottom:"20px" }}>
               {Object.entries(result.scores).map(([key,val])=>(
                 <div key={key} style={{ background:D.dark, padding:"20px 14px", textAlign:"center" }}>
-                  <div style={{ fontFamily:"'Playfair Display',serif", fontSize:"36px", fontWeight:300, color:val>=70?D.white:val>=40?D.mid:"#c06050", lineHeight:1, marginBottom:"4px" }}>{val}</div>
+                  <div style={{ fontFamily:"'Bodoni Moda',serif", fontSize:"36px", fontWeight:300, color:val>=70?D.white:val>=40?D.mid:"#c06050", lineHeight:1, marginBottom:"4px" }}>{val}</div>
                   <div style={{ fontSize:"9px", letterSpacing:"0.18em", textTransform:"uppercase", color:D.mid, marginBottom:"8px" }}>{key}</div>
                   <div style={{ height:"2px", background:D.border }}>
                     <div style={{ height:"100%", width:`${val}%`, background:val>=70?D.white:val>=40?D.mid:"#c06050" }}/>
@@ -218,8 +218,8 @@ export default function Assessment({ isPro=false, canRun=true, assessCount=0, on
             {/* Statement */}
             <div style={{ padding:"24px", background:D.dark, border:`1px solid ${D.border}`, marginBottom:"16px" }}>
               <div style={{ fontSize:"9px", letterSpacing:"0.3em", textTransform:"uppercase", color:D.mid, marginBottom:"16px" }}>Statement Analysis · {result.scores.statement}/100</div>
-              <div style={{ borderLeft:`2px solid ${D.borderMed}`, paddingLeft:"14px", marginBottom:"14px", fontFamily:"'Playfair Display',serif", fontSize:"15px", fontStyle:"italic", color:D.mid, lineHeight:1.7 }}>"{form.statement.slice(0,200)}{form.statement.length>200?"…":""}"</div>
-              <div style={{ fontFamily:"'Playfair Display',serif", fontSize:"14px", fontStyle:"italic", color:D.mid, marginBottom:"12px" }}>{result.statement_critique.overall}</div>
+              <div style={{ borderLeft:`2px solid ${D.borderMed}`, paddingLeft:"14px", marginBottom:"14px", fontFamily:"'Bodoni Moda',serif", fontSize:"15px", fontStyle:"italic", color:D.mid, lineHeight:1.7 }}>"{form.statement.slice(0,200)}{form.statement.length>200?"…":""}"</div>
+              <div style={{ fontFamily:"'Bodoni Moda',serif", fontSize:"14px", fontStyle:"italic", color:D.mid, marginBottom:"12px" }}>{result.statement_critique.overall}</div>
               {result.statement_critique.good.map((t,i)=><div key={i} style={{ padding:"7px 10px", borderLeft:"2px solid #606060", marginBottom:"6px", fontSize:"11px", color:D.mid }}>✓ {t}</div>)}
               {result.statement_critique.improve.map((t,i)=><div key={i} style={{ padding:"7px 10px", borderLeft:"2px solid #c06050", marginBottom:"6px", fontSize:"11px", color:D.mid }}>→ {t}</div>)}
             </div>
@@ -232,11 +232,11 @@ export default function Assessment({ isPro=false, canRun=true, assessCount=0, on
                   <div style={{ borderRadius:"2px", background:m.priority==="high"?"#c06050":m.priority==="med"?D.mid:"#404040" }}/>
                   <div>
                     <div style={{ fontSize:"8px", letterSpacing:"0.28em", textTransform:"uppercase", color:D.muted, marginBottom:"4px" }}>{m.type}</div>
-                    <div style={{ fontFamily:"'Playfair Display',serif", fontSize:"18px", color:D.white, marginBottom:"5px", lineHeight:1.2 }}>{m.title}</div>
+                    <div style={{ fontFamily:"'Bodoni Moda',serif", fontSize:"18px", color:D.white, marginBottom:"5px", lineHeight:1.2 }}>{m.title}</div>
                     <div style={{ fontSize:"11px", color:D.mid, lineHeight:1.6 }}>{m.rationale}</div>
                   </div>
                   <div style={{ textAlign:"right", flexShrink:0 }}>
-                    <div style={{ fontFamily:"'Playfair Display',serif", fontSize:"20px", color:D.accent }}>+{m.xp}</div>
+                    <div style={{ fontFamily:"'Bodoni Moda',serif", fontSize:"20px", color:D.accent }}>+{m.xp}</div>
                     <div style={{ fontSize:"8px", letterSpacing:"0.15em", color:D.muted }}>XP</div>
                   </div>
                 </div>
@@ -246,7 +246,7 @@ export default function Assessment({ isPro=false, canRun=true, assessCount=0, on
             {/* Next level */}
             <div style={{ padding:"28px", background:D.dark2, border:`1px solid ${D.borderMed}`, textAlign:"center" }}>
               <div style={{ fontSize:"9px", letterSpacing:"0.35em", textTransform:"uppercase", color:D.mid, marginBottom:"8px" }}>⬆ To Reach Level {Math.min(result.level+1,5)}</div>
-              <div style={{ fontFamily:"'Playfair Display',serif", fontSize:"28px", fontStyle:"italic", fontWeight:300, color:D.white, marginBottom:"14px" }}>{result.next_level_name}</div>
+              <div style={{ fontFamily:"'Bodoni Moda',serif", fontSize:"28px", fontStyle:"italic", fontWeight:300, color:D.white, marginBottom:"14px" }}>{result.next_level_name}</div>
               {result.next_level_gates.map((g,i)=>(
                 <div key={i} style={{ fontSize:"12px", color:D.mid, lineHeight:2 }}>— <span style={{ color:D.white }}>{g}</span></div>
               ))}
