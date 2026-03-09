@@ -1,9 +1,9 @@
 import { useState, useMemo } from "react";
 
 const D = {
-  black:"#0a0a0a", dark:"#111111", dark2:"#1a1a1a", dark3:"#222222",
-  white:"#f5f4f0", mid:"#888884", muted:"#555552",
-  border:"rgba(245,244,240,0.08)", borderMed:"rgba(245,244,240,0.15)",
+  black:"#ffffff", dark:"#f7f6f2", dark2:"#eeece8", dark3:"#e4e2dd",
+  white:"#0a0a0a", accent:"#1a1a1a", accentD:"#333333",
+  mid:"#555552", muted:"#888884", border:"rgba(10,10,10,0.1)", borderMed:"rgba(10,10,10,0.2)",
 };
 
 const GALLERIES = [
@@ -62,7 +62,7 @@ export default function GalleryMatcher({ isPro=false, onUpgrade }) {
 
   return (
     <div style={{ minHeight:"100vh", background:D.black, color:D.white, paddingTop:"64px", fontFamily:"monospace" }}>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap'); ::-webkit-scrollbar{width:4px} ::-webkit-scrollbar-track{background:#111} ::-webkit-scrollbar-thumb{background:#333}`}</style>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=DM+Mono:wght@300;400;500&display=swap'); ::-webkit-scrollbar{width:4px} ::-webkit-scrollbar-track{background:#f7f6f2} ::-webkit-scrollbar-thumb{background:#ccc}`}</style>
 
       <div style={{ display:"grid", gridTemplateColumns: gallery ? "1fr 420px" : "1fr", minHeight:"calc(100vh - 64px)" }}>
 
@@ -72,8 +72,8 @@ export default function GalleryMatcher({ isPro=false, onUpgrade }) {
           {/* Header */}
           <div style={{ padding:"40px 48px 28px", borderBottom:`1px solid ${D.border}` }}>
             <div style={{ fontSize:"9px", letterSpacing:"0.5em", textTransform:"uppercase", color:D.mid, marginBottom:"10px" }}>Gallery Matcher · Pro</div>
-            <h1 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"clamp(32px,4vw,56px)", fontWeight:600, color:D.white, lineHeight:1, textTransform:"uppercase", marginBottom:"6px" }}>Find Your Gallery.</h1>
-            <p style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"16px", color:D.mid, fontStyle:"italic" }}>
+            <h1 style={{ fontFamily:"'Playfair Display',serif", fontSize:"clamp(32px,4vw,56px)", fontWeight:600, color:D.white, lineHeight:1, textTransform:"uppercase", marginBottom:"6px" }}>Find Your Gallery.</h1>
+            <p style={{ fontFamily:"'Playfair Display',serif", fontSize:"16px", color:D.mid, fontStyle:"italic" }}>
               {isPro ? `${filtered.length} galleries matched.` : `Showing 4 of ${filtered.length}. Upgrade for full access.`}
             </p>
           </div>
@@ -106,7 +106,7 @@ export default function GalleryMatcher({ isPro=false, onUpgrade }) {
                       <span style={{ fontSize:"8px", letterSpacing:"0.15em", textTransform:"uppercase", padding:"2px 8px", border:`1px solid ${D.border}`, color:D.mid, borderRadius:"3px" }}>Tier {g.tier} — {TIER_LABEL[g.tier]}</span>
                       {g.openSubmissions && <span style={{ fontSize:"8px", color:"#709070", letterSpacing:"0.1em" }}>OPEN SUBMISSIONS</span>}
                     </div>
-                    <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"24px", color:D.white, lineHeight:1.2, marginBottom:"3px" }}>{g.name}</div>
+                    <div style={{ fontFamily:"'Playfair Display',serif", fontSize:"24px", color:D.white, lineHeight:1.2, marginBottom:"3px" }}>{g.name}</div>
                     <div style={{ fontSize:"10px", color:D.mid }}>{g.city} · {g.country}</div>
                   </div>
                   <div style={{ display:"flex", gap:"6px", flexWrap:"wrap", maxWidth:"260px", justifyContent:"flex-end" }}>
@@ -120,11 +120,11 @@ export default function GalleryMatcher({ isPro=false, onUpgrade }) {
 
             {!isPro && filtered.length > 4 && (
               <div style={{ padding:"48px", textAlign:"center", borderBottom:`1px solid ${D.border}` }}>
-                <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"26px", fontStyle:"italic", color:D.white, marginBottom:"10px" }}>
+                <div style={{ fontFamily:"'Playfair Display',serif", fontSize:"26px", fontStyle:"italic", color:D.white, marginBottom:"10px" }}>
                   {filtered.length - 4} more galleries in Pro.
                 </div>
                 <p style={{ fontSize:"11px", color:D.mid, marginBottom:"22px" }}>Full profiles, entry strategies, and contact intelligence.</p>
-                <button onClick={onUpgrade} style={{ padding:"13px 36px", background:D.white, border:"none", color:D.black, fontFamily:"monospace", fontSize:"10px", fontWeight:600, letterSpacing:"0.22em", textTransform:"uppercase", cursor:"pointer", borderRadius:"4px" }}>
+                <button onClick={onUpgrade} style={{ padding:"13px 36px", background:D.white, border:"1px solid rgba(10,10,10,0.8)", color:D.black, fontFamily:"monospace", fontSize:"10px", fontWeight:600, letterSpacing:"0.22em", textTransform:"uppercase", cursor:"pointer", borderRadius:"4px" }}>
                   Unlock Gallery Matcher →
                 </button>
               </div>
@@ -138,14 +138,14 @@ export default function GalleryMatcher({ isPro=false, onUpgrade }) {
             <div style={{ padding:"28px 28px 20px", borderBottom:`1px solid ${D.border}`, display:"flex", justifyContent:"space-between", alignItems:"flex-start" }}>
               <div>
                 <div style={{ fontSize:"8px", letterSpacing:"0.3em", textTransform:"uppercase", color:D.mid, marginBottom:"8px" }}>Tier {gallery.tier} — {TIER_LABEL[gallery.tier]}</div>
-                <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"28px", fontWeight:600, color:D.white, lineHeight:1.1, marginBottom:"4px" }}>{gallery.name}</div>
+                <div style={{ fontFamily:"'Playfair Display',serif", fontSize:"28px", fontWeight:600, color:D.white, lineHeight:1.1, marginBottom:"4px" }}>{gallery.name}</div>
                 <div style={{ fontSize:"11px", color:D.mid }}>{gallery.city} · {gallery.country}</div>
               </div>
               <button onClick={() => setSelected(null)} style={{ background:"transparent", border:`1px solid ${D.border}`, color:D.mid, width:"28px", height:"28px", cursor:"pointer", borderRadius:"4px", fontSize:"14px" }}>×</button>
             </div>
 
             <div style={{ padding:"24px 28px" }}>
-              <p style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"15px", color:D.mid, lineHeight:1.7, marginBottom:"20px" }}>{gallery.about}</p>
+              <p style={{ fontFamily:"'Playfair Display',serif", fontSize:"15px", color:D.mid, lineHeight:1.7, marginBottom:"20px" }}>{gallery.about}</p>
 
               {/* Artists */}
               <div style={{ marginBottom:"20px" }}>
@@ -170,7 +170,7 @@ export default function GalleryMatcher({ isPro=false, onUpgrade }) {
                 <div style={{ fontSize:"8px", letterSpacing:"0.3em", textTransform:"uppercase", color:D.muted, marginBottom:"10px" }}>Career Level Match</div>
                 <div style={{ display:"flex", gap:"6px" }}>
                   {[1,2,3,4,5].map(l => (
-                    <div key={l} style={{ width:"36px", height:"36px", border:`1px solid ${gallery.levels.includes(l)?D.borderMed:D.border}`, display:"flex", alignItems:"center", justifyContent:"center", fontFamily:"'Cormorant Garamond',serif", fontSize:"18px", color:gallery.levels.includes(l)?D.white:D.muted, background:gallery.levels.includes(l)?D.dark2:"transparent" }}>{l}</div>
+                    <div key={l} style={{ width:"36px", height:"36px", border:`1px solid ${gallery.levels.includes(l)?D.borderMed:D.border}`, display:"flex", alignItems:"center", justifyContent:"center", fontFamily:"'Playfair Display',serif", fontSize:"18px", color:gallery.levels.includes(l)?D.white:D.muted, background:gallery.levels.includes(l)?D.dark2:"transparent" }}>{l}</div>
                   ))}
                 </div>
               </div>
