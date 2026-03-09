@@ -29,7 +29,30 @@ const TONES = [
   { v:"concise",    l:"Concise & Direct",       desc:"Short, punchy, commercial-ready" },
 ];
 
-export default function PortfolioBuilder() {
+export default function PortfolioBuilder({ lang="en" }) {
+  const T = lang==="es" ? {
+    uploadTitle:"Sube tu trabajo.", uploadDesc:"Sube 3-10 imágenes de tu trabajo reciente.",
+    contextTitle:"Tu contexto.", contextDesc:"Cuéntanos sobre tu práctica.",
+    genTitle:"Leyendo tu trabajo…", genDesc:"Analizando temas visuales y territorio conceptual.",
+    discipline:"Disciplina Principal", level:"Nivel de Carrera", tone:"Tono del Statement",
+    existing:"Statement Existente (opcional)", cvNotes:"Notas de CV", extra:"Algo más (opcional)",
+    continueBtn:(n)=>`Continuar con ${n} imagen${n!==1?"es":""}`, skipBtn:"Sin Imágenes",
+    generateBtn:"Generar Statement y CV →", backBtn:"← Volver", regenBtn:"← Regenerar",
+    copyAll:"Copiar Statement + Statement Corto", copied:"Copiado ✓", copy:"Copiar",
+    visualAnalysis:"Análisis Visual", fullStatement:"Statement Completo", shortStatement:"Statement Corto",
+    cvStructure:"Estructura de CV", pitches:"Propuestas para Galerías"
+  } : {
+    uploadTitle:"T.uploadTitle", uploadDesc:"Upload 3–10 images of your recent work.",
+    contextTitle:"T.contextTitle", contextDesc:"Tell us about your practice.",
+    genTitle:"T.genTitle", genDesc:"Analysing visual themes and conceptual territory.",
+    discipline:T.discipline, level:T.level, tone:T.tone,
+    existing:"Existing Statement (optional)", cvNotes:"CV Notes", extra:"Anything else (optional)",
+    continueBtn:(n)=>`Continue with ${n} image${n!==1?"s":""}`, skipBtn:T.skipBtn,
+    generateBtn:T.generateBtn, backBtn:T.backBtn, regenBtn:T.regenBtn,
+    copyAll:"Copy Statement + Short Statement", copied:T.copied, copy:T.copy,
+    visualAnalysis:T.visualAnalysis, fullStatement:T.fullStatement, shortStatement:T.shortStatement,
+    cvStructure:T.cvStructure, pitches:T.pitches
+  };
   const [step, setStep]           = useState("upload");
   const [images, setImages]       = useState([]);
   const [form, setForm]           = useState({ discipline:"", level:"3", tone:"formal", existingStatement:"", cv:"", extraNotes:"" });
@@ -87,7 +110,7 @@ export default function PortfolioBuilder() {
   const copy = (text, key) => { navigator.clipboard.writeText(text); setCopied(key); setTimeout(()=>setCopied(null),2000); };
   const CopyBtn = ({text,id}) => (
     <button onClick={()=>copy(text,id)} style={{ padding:"5px 12px",background:copied===id?"#0a0a0a":"transparent",border:`1px solid ${copied===id?"#0a0a0a":D.borderMed}`,color:copied===id?"#ffffff":D.mid,fontFamily:"'DM Mono',monospace",fontSize:"8px",letterSpacing:"0.15em",textTransform:"uppercase",cursor:"pointer",transition:"all 0.2s" }}>
-      {copied===id?"Copied ✓":"Copy"}
+      {copied===id?T.copied:T.copy}
     </button>
   );
 
@@ -127,7 +150,7 @@ export default function PortfolioBuilder() {
         {/* ── STEP 1: UPLOAD ── */}
         {step==="upload"&&(
           <div style={{ maxWidth:"680px",margin:"0 auto",padding:"48px 32px" }}>
-            <h1 style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"clamp(32px,4vw,52px)",fontWeight:400,fontStyle:"italic",color:D.ink,marginBottom:"14px",lineHeight:1.1 }}>Upload your work.</h1>
+            <h1 style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"clamp(32px,4vw,52px)",fontWeight:400,fontStyle:"italic",color:D.ink,marginBottom:"14px",lineHeight:1.1 }}>T.uploadTitle</h1>
             <p style={{ fontFamily:"'DM Mono',monospace",fontSize:"11px",color:D.mid,lineHeight:1.8,marginBottom:"36px" }}>
               Upload 3–10 images of your recent work. Claude will analyse the visual themes, materials, and conceptual territory to write a statement that speaks authentically about what you make.
             </p>
@@ -160,7 +183,7 @@ export default function PortfolioBuilder() {
             <div style={{ display:"grid",gridTemplateColumns:"1fr auto",gap:"8px" }}>
               <button onClick={()=>setStep("context")} disabled={images.length===0}
                 style={{ padding:"16px",background:images.length>0?"#0a0a0a":"#cccccc",border:"none",color:"#ffffff",fontFamily:"'DM Mono',monospace",fontSize:"10px",fontWeight:600,letterSpacing:"0.22em",textTransform:"uppercase",cursor:images.length>0?"pointer":"not-allowed" }}>
-                Continue with {images.length} image{images.length!==1?"s":""} →
+                {T.continueBtn(images.length)} →
               </button>
               <button onClick={()=>setStep("context")}
                 style={{ padding:"16px 20px",background:"transparent",border:`1px solid ${D.borderMed}`,color:D.mid,fontFamily:"'DM Mono',monospace",fontSize:"10px",letterSpacing:"0.15em",textTransform:"uppercase",cursor:"pointer",whiteSpace:"nowrap" }}>
@@ -176,7 +199,7 @@ export default function PortfolioBuilder() {
         {/* ── STEP 2: CONTEXT ── */}
         {step==="context"&&(
           <div style={{ maxWidth:"680px",margin:"0 auto",padding:"48px 32px" }}>
-            <h1 style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"clamp(28px,4vw,48px)",fontWeight:400,fontStyle:"italic",color:D.ink,marginBottom:"14px",lineHeight:1.1 }}>Your context.</h1>
+            <h1 style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"clamp(28px,4vw,48px)",fontWeight:400,fontStyle:"italic",color:D.ink,marginBottom:"14px",lineHeight:1.1 }}>T.contextTitle</h1>
             <p style={{ fontFamily:"'DM Mono',monospace",fontSize:"11px",color:D.mid,lineHeight:1.8,marginBottom:"36px" }}>
               Tell us about your practice so the statement is calibrated to your voice and level.
             </p>
@@ -262,7 +285,7 @@ export default function PortfolioBuilder() {
         {step==="generate"&&(
           <div style={{ maxWidth:"480px",margin:"0 auto",padding:"120px 32px",textAlign:"center" }}>
             <div style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"56px",fontWeight:300,color:"#0a0a0a",marginBottom:"28px",animation:"pulse 2s ease-in-out infinite",opacity:0.6 }}>∴</div>
-            <div style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"28px",fontWeight:400,fontStyle:"italic",color:D.ink,marginBottom:"12px",lineHeight:1.2 }}>Reading your work…</div>
+            <div style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"28px",fontWeight:400,fontStyle:"italic",color:D.ink,marginBottom:"12px",lineHeight:1.2 }}>T.genTitle</div>
             <div style={{ fontFamily:"'DM Mono',monospace",fontSize:"11px",color:D.mid,lineHeight:1.9 }}>
               Analysing visual themes, materials and conceptual territory.<br/>
               Writing your statement in the voice of your practice.
@@ -292,7 +315,7 @@ export default function PortfolioBuilder() {
 
             {/* Tabs */}
             <div style={{ display:"flex",borderBottom:`1px solid ${D.border}`,marginBottom:"28px" }}>
-              {[{id:"statement",label:"Artist Statement"},{id:"short",label:"Short Statement"},{id:"cv",label:"CV Structure"},{id:"pitches",label:"Gallery Pitches"}].map(tab=>(
+              {[{id:"statement",label:"Artist Statement"},{id:"short",label:T.shortStatement},{id:"cv",label:T.cvStructure},{id:"pitches",label:T.pitches}].map(tab=>(
                 <button key={tab.id} onClick={()=>setActiveTab(tab.id)}
                   style={{ padding:"10px 20px",background:"transparent",border:"none",borderBottom:`2px solid ${activeTab===tab.id?"#0a0a0a":"transparent"}`,color:activeTab===tab.id?"#0a0a0a":D.muted,fontFamily:"'DM Mono',monospace",fontSize:"9px",letterSpacing:"0.15em",textTransform:"uppercase",cursor:"pointer",transition:"all 0.15s",fontWeight:activeTab===tab.id?600:400 }}>
                   {tab.label}
@@ -359,7 +382,7 @@ export default function PortfolioBuilder() {
               </button>
               <button onClick={()=>copy(`${result.statement}\n\n---\n\n${result.shortStatement}`,"all")}
                 style={{ flex:1,padding:"12px",background:"#0a0a0a",border:"none",color:"#ffffff",fontFamily:"'DM Mono',monospace",fontSize:"9px",fontWeight:600,letterSpacing:"0.2em",textTransform:"uppercase",cursor:"pointer" }}>
-                {copied==="all"?"Copied ✓":"Copy Statement + Short Statement"}
+                {copied==="all"?T.copied:"Copy Statement + Short Statement"}
               </button>
             </div>
           </div>
