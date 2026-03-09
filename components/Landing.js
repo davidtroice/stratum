@@ -86,7 +86,8 @@ const COPY = {
 // top = medium grey, middle = dark, bottom = black, white gaps between
 const Logo = ({ size=36 }) => (
   <img src="/logo.png" width={size} height={size}
-    style={{ objectFit:"contain", display:"block", filter:"brightness(0) invert(1)" }}
+    style={{ objectFit:"contain", display:"block", filter:"brightness(10)" }}
+    onError={e => { e.target.style.display="none"; }}
     alt="Stratum" />
 );
 
@@ -177,12 +178,12 @@ export default function Landing({ onNavigate, isPro, onUpgrade }) {
       </section>
 
       {/* STATS BAR */}
-      <section style={{ background:D.accent }}>
+      <section style={{ background:"#1a1a1a", borderTop:"1px solid rgba(245,244,240,0.1)", borderBottom:"1px solid rgba(245,244,240,0.1)" }}>
         <div className="stat-grid" style={{ display:"grid",gridTemplateColumns:"repeat(4,1fr)" }}>
           {T.stats.map(([n,l],i)=>(
-            <div key={l} style={{ padding:"26px 20px",textAlign:"center",borderRight:i<3?"1px solid rgba(10,10,10,0.12)":"none" }}>
-              <div style={{ fontFamily:"'Cormorant Garamond',serif",fontSize:"44px",fontWeight:600,color:D.white,lineHeight:1 }}>{n}</div>
-              <div style={{ fontSize:"9px",letterSpacing:"0.2em",textTransform:"uppercase",color:"rgba(245,244,240,0.5)",marginTop:"4px" }}>{l}</div>
+            <div key={l} style={{ padding:"32px 20px",textAlign:"center",borderRight:i<3?"1px solid rgba(245,244,240,0.08)":"none" }}>
+              <div style={{ fontFamily:"'Cormorant Garamond',serif",fontSize:"48px",fontWeight:600,color:D.white,lineHeight:1 }}>{n}</div>
+              <div style={{ fontSize:"9px",letterSpacing:"0.2em",textTransform:"uppercase",color:D.mid,marginTop:"6px" }}>{l}</div>
             </div>
           ))}
         </div>
