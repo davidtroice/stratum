@@ -20,13 +20,9 @@ const LS_ASSESS_COUNT = "stratum_assessment_count";
 const D = { bg:"#f2f2f0", ink:"#1a1a18", mid:"#6b6b68", border:"rgba(26,26,24,0.08)", gold:"#c8a84b" };
 
 const LogoMark = ({ size=24 }) => (
-  <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
-    <rect x="8"  y="72" width="84" height="17" rx="5" fill="#1a1a18" opacity="0.85"/>
-    <rect x="15" y="53" width="70" height="14" rx="4" fill="#1a1a18" opacity="0.58"/>
-    <rect x="22" y="36" width="56" height="13" rx="4" fill="#1a1a18" opacity="0.34"/>
-    <rect x="29" y="21" width="42" height="11" rx="3" fill="#1a1a18" opacity="0.18"/>
-    <rect x="35" y="8"  width="30" height="10" rx="3" fill="#c8a84b"/>
-  </svg>
+  <img src="/logo.png" width={size} height={size}
+    style={{ objectFit:"contain", display:"block", filter:"brightness(0) invert(1)" }}
+    alt="Stratum" />
 );
 
 export default function Index() {
