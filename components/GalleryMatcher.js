@@ -73,12 +73,12 @@ export default function GalleryMatcher({ isPro=false, onUpgrade, lang="en" }) {
     moreGalleries:(n)=>`${n} galerías más con Pro.`, fullProfiles:"Perfiles completos, estrategias de entrada."
   } : {
     heading:"Find Your Gallery.", subFree:(n)=>`Showing 4 of ${n}. Upgrade for full access.`, subPro:(n)=>`${n} galleries matched.`,
-    allRegions:T.allRegions, allDisciplines:T.allDisciplines, allLevels:T.allLevels, anyEntry:T.anyEntry,
-    openCall:T.openCall, portfolioSub:T.portfolioSub, referralOnly:T.referralOnly,
+    allRegions:"All Regions", allDisciplines:"All Disciplines", allLevels:"All Levels", anyEntry:"Any Entry",
+    openCall:"Open Call", portfolioSub:"Portfolio Sub.", referralOnly:"Referral Only",
     knownArtists:"Known Artists", fairPresence:"Fair Presence", levelMatch:"Career Level Match",
     openSub:"✓ Open to Submissions", closedSub:"✗ Referral / Invitation Only",
     visitSite:"Visit Gallery Website ↗", unlockBtn:"Unlock Gallery Matcher →",
-    moreGalleries:(n)=>`${n} more galleries in Pro.`, fullProfiles:T.fullProfiles
+    moreGalleries:(n)=>`${n} more galleries in Pro.`, fullProfiles:"Full profiles, entry strategies, and contact intelligence."
   };
   const [filters, setFilters] = useState({ region:"all", discipline:"all", level:"all", entry:"all" });
   const [selected, setSelected] = useState(null);
