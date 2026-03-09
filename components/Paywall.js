@@ -8,22 +8,26 @@ const Logo = ({ size=32 }) => (
   </svg>
 );
 
-const PRO_FEATURES = [
-  { icon:"—", text:"Unlimited AI career assessments" },
-  { icon:"—", text:"Full opportunity database — 100+ residencies, grants, fairs worldwide" },
-  { icon:"—", text:"Gallery matching + personalised outreach templates" },
-  { icon:"—", text:"Portfolio & AI Statement Builder — upload your work, get a professional statement + CV" },
-  { icon:"—", text:"Mexico & Latin America opportunities — FONCA, Casa Wabi, ZONAMACO and more" },
-  { icon:"—", text:"Priority mission list with full career roadmap" },
-];
 
-export default function Paywall({ feature, onClose, onUpgrade, loading }) {
+
+export default function Paywall({ feature, onClose, onUpgrade, loading, lang="en" }) {
+  const TL = lang==="es" ? {
+    title:"Stratum Pro", unlock:"Desbloquear", annual:"Anual", monthly:"Mensual", save:"ahorra 31%",
+    email:"Tu correo electrónico", cta:(plan)=>plan==="annual"?"Desbloquear Pro — $1,980 MXN/año →":"Desbloquear Pro — $240 MXN/mes →",
+    secure:"Pago seguro vía Stripe · Cancela cuando quieras", err:"Por favor ingresa un correo válido.", loading:"Redirigiendo…",
+    features:["Evaluaciones de carrera IA ilimitadas","Base de datos completa — 100+ residencias, becas, ferias mundiales","Matching de galerías + plantillas de contacto personalizadas","Portfolio y Generador de Statement IA","Oportunidades México y LATAM — FONCA, Casa Wabi, ZONAMACO y más","Lista de misiones prioritarias con hoja de ruta completa"]
+  } : {
+    title:"Stratum Pro", unlock:"Unlock", annual:"Annual", monthly:"Monthly", save:"save 31%",
+    email:"Your email address", cta:(plan)=>plan==="annual"?"Unlock Pro — $1,980 MXN/yr →":"Unlock Pro — $240 MXN/mo →",
+    secure:TL.secure, err:TL.err, loading:TL.loading,
+    features:["Unlimited AI career assessments","Full opportunity database — 100+ residencies, grants, fairs worldwide","Gallery matching + personalised outreach templates","Portfolio & AI Statement Builder","Mexico & Latin America opportunities — FONCA, Casa Wabi, ZONAMACO and more","Priority mission list with full career roadmap"]
+  };
   const [plan, setPlan]   = useState("annual");
   const [email, setEmail] = useState("");
   const [err, setErr]     = useState("");
 
   const handleSubmit = () => {
-    if (!email || !email.includes("@")) { setErr("Please enter a valid email."); return; }
+    if (!email || !email.includes("@")) { setErr(TL.err); return; }
     setErr(""); onUpgrade(plan, email);
   };
 
@@ -54,10 +58,10 @@ export default function Paywall({ feature, onClose, onUpgrade, loading }) {
 
           {/* Features */}
           <div style={{ marginBottom:"28px",display:"flex",flexDirection:"column",gap:"9px" }}>
-            {PRO_FEATURES.map((f,i)=>(
+            {TL.features.map((text,i)=>(
               <div key={i} style={{ display:"flex",gap:"14px",alignItems:"flex-start" }}>
-                <span style={{ color:"#0a0a0a",fontSize:"12px",flexShrink:0,marginTop:"1px",fontFamily:"'DM Mono',monospace",opacity:0.4 }}>{f.icon}</span>
-                <span style={{ fontFamily:"'DM Mono',monospace",fontSize:"11px",color:"#555552",lineHeight:1.6,letterSpacing:"0.01em" }}>{f.text}</span>
+                <span style={{ color:"#0a0a0a",fontSize:"12px",flexShrink:0,marginTop:"1px",fontFamily:"'DM Mono',monospace",opacity:0.4 }}>—</span>
+                <span style={{ fontFamily:"'DM Mono',monospace",fontSize:"11px",color:"#555552",lineHeight:1.6,letterSpacing:"0.01em" }}>{text}</span>
               </div>
             ))}
           </div>
@@ -73,7 +77,7 @@ export default function Paywall({ feature, onClose, onUpgrade, loading }) {
             ].map(p=>(
               <button key={p.id} onClick={()=>setPlan(p.id)} style={{ padding:"14px",border:`1.5px solid ${plan===p.id?"#0a0a0a":"rgba(10,10,10,0.12)"}`,background:plan===p.id?"#0a0a0a":"transparent",cursor:"pointer",textAlign:"left",transition:"all 0.15s" }}>
                 <div style={{ display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"5px" }}>
-                  <span style={{ fontFamily:"'DM Mono',monospace",fontSize:"9px",fontWeight:600,color:plan===p.id?"#ffffff":"#0a0a0a",letterSpacing:"0.12em",textTransform:"uppercase" }}>{p.label}</span>
+                  <span style={{ fontFamily:"'DM Mono',monospace",fontSize:"9px",fontWeight:600,color:plan===p.id?"#ffffff":"#0a0a0a",letterSpacing:"0.12em",textTransform:"uppercase" }}>{p.id==="annual"?TL.annual:TL.monthly}</span>
                   {p.saving&&<span style={{ fontFamily:"'DM Mono',monospace",fontSize:"8px",background:plan===p.id?"rgba(255,255,255,0.15)":"rgba(10,10,10,0.08)",color:plan===p.id?"#ffffff":"#555552",padding:"2px 6px",letterSpacing:"0.05em" }}>{p.saving}</span>}
                 </div>
                 <div style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"15px",color:plan===p.id?"#ffffff":"#555552",fontWeight:400 }}>{p.price}</div>
@@ -94,7 +98,7 @@ export default function Paywall({ feature, onClose, onUpgrade, loading }) {
           {/* CTA */}
           <button onClick={handleSubmit} disabled={loading}
             style={{ width:"100%",padding:"16px",background:loading?"#888884":"#0a0a0a",border:"none",color:"#ffffff",fontFamily:"'DM Mono',monospace",fontSize:"11px",fontWeight:600,letterSpacing:"0.22em",textTransform:"uppercase",cursor:loading?"not-allowed":"pointer",transition:"opacity 0.2s" }}>
-            {loading?"Redirecting…":`Unlock Pro — ${plan==="annual"?"$1,980 MXN/yr":"$240 MXN/mo"} →`}
+            {loading?TL.loading:`Unlock Pro — ${plan==="annual"?"$1,980 MXN/yr":"$240 MXN/mo"} →`}
           </button>
 
           <div style={{ textAlign:"center",marginTop:"14px",fontFamily:"'DM Mono',monospace",fontSize:"9px",color:"#888884",letterSpacing:"0.08em" }}>
