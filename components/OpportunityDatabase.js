@@ -1,9 +1,9 @@
 import { useState, useMemo } from "react";
 
 const D = {
-  black:"#0a0a0a", dark:"#111111", dark2:"#1a1a1a", dark3:"#222222",
-  white:"#f5f4f0", mid:"#888884", muted:"#555552",
-  border:"rgba(245,244,240,0.08)", borderMed:"rgba(245,244,240,0.15)",
+  black:"#ffffff", dark:"#f7f6f2", dark2:"#eeece8", dark3:"#e4e2dd",
+  white:"#0a0a0a", accent:"#1a1a1a", accentD:"#333333",
+  mid:"#555552", muted:"#888884", border:"rgba(10,10,10,0.1)", borderMed:"rgba(10,10,10,0.2)",
 };
 
 const TYPE_META = {
@@ -78,16 +78,16 @@ export default function OpportunityDatabase({ isPro=false, onUpgrade }) {
 
   return (
     <div style={{ minHeight:"100vh", background:D.black, color:D.white, paddingTop:"64px", fontFamily:"monospace" }}>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap'); ::-webkit-scrollbar{width:4px} ::-webkit-scrollbar-track{background:#0a0a0a} ::-webkit-scrollbar-thumb{background:#333}`}</style>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=DM+Mono:wght@300;400;500&display=swap'); ::-webkit-scrollbar{width:4px} ::-webkit-scrollbar-track{background:#f7f6f2} ::-webkit-scrollbar-thumb{background:#ccc}`}</style>
 
       {/* Header */}
       <div style={{ padding:"48px 48px 32px", borderBottom:`1px solid ${D.border}` }}>
         <div style={{ maxWidth:"1100px", margin:"0 auto" }}>
           <div style={{ fontSize:"9px", letterSpacing:"0.5em", textTransform:"uppercase", color:D.mid, marginBottom:"12px" }}>Opportunity Database</div>
-          <h1 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"clamp(36px,5vw,64px)", fontWeight:600, color:D.white, lineHeight:1, textTransform:"uppercase", marginBottom:"8px" }}>
+          <h1 style={{ fontFamily:"'Playfair Display',serif", fontSize:"clamp(36px,5vw,64px)", fontWeight:600, color:D.white, lineHeight:1, textTransform:"uppercase", marginBottom:"8px" }}>
             {filtered.length} Opportunities.
           </h1>
-          <p style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"18px", color:D.mid, fontStyle:"italic" }}>
+          <p style={{ fontFamily:"'Playfair Display',serif", fontSize:"18px", color:D.mid, fontStyle:"italic" }}>
             {isPro ? "Full database — filtered for your level and region." : `Showing 5 of ${filtered.length}. Upgrade for full access.`}
           </p>
         </div>
@@ -110,7 +110,7 @@ export default function OpportunityDatabase({ isPro=false, onUpgrade }) {
             <FilterBtn key={v} val={v} curr={levelF} set={setLevelF} label={l}/>
           ))}
         </div>
-        <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search opportunities..." style={{ width:"100%", padding:"12px 16px", background:"rgba(245,244,240,0.04)", border:`1px solid ${D.border}`, color:D.white, fontFamily:"monospace", fontSize:"12px", outline:"none", borderRadius:"4px", marginBottom:"32px" }}/>
+        <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search opportunities..." style={{ width:"100%", padding:"12px 16px", background:"rgba(10,10,10,0.04)", border:`1px solid ${D.border}`, color:D.white, fontFamily:"monospace", fontSize:"12px", outline:"none", borderRadius:"4px", marginBottom:"32px" }}/>
 
         {/* List */}
         <div style={{ display:"flex", flexDirection:"column", gap:"1px", background:D.border }}>
@@ -126,7 +126,7 @@ export default function OpportunityDatabase({ isPro=false, onUpgrade }) {
                       <span style={{ fontSize:"8px", letterSpacing:"0.15em", textTransform:"uppercase", color:meta.color, background:`${meta.color}15`, padding:"3px 8px", borderRadius:"3px", border:`1px solid ${meta.color}30` }}>{meta.label}</span>
                       {o.stipend && <span style={{ fontSize:"8px", letterSpacing:"0.1em", color:"#606060" }}>STIPEND</span>}
                     </div>
-                    <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"20px", color:D.white, lineHeight:1.2 }}>{o.name}</div>
+                    <div style={{ fontFamily:"'Playfair Display',serif", fontSize:"20px", color:D.white, lineHeight:1.2 }}>{o.name}</div>
                     <div style={{ fontSize:"10px", color:D.mid, marginTop:"3px" }}>{o.org} · {o.city}, {o.country}</div>
                   </div>
                   <div style={{ textAlign:"right", fontSize:"10px", color:D.mid, whiteSpace:"nowrap" }}>{o.duration}</div>
@@ -135,7 +135,7 @@ export default function OpportunityDatabase({ isPro=false, onUpgrade }) {
                 </div>
                 {isOpen && (
                   <div style={{ padding:"0 24px 20px", borderTop:`1px solid ${D.border}` }}>
-                    <p style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"16px", color:D.mid, lineHeight:1.7, marginTop:"16px", marginBottom:"12px" }}>{o.description}</p>
+                    <p style={{ fontFamily:"'Playfair Display',serif", fontSize:"16px", color:D.mid, lineHeight:1.7, marginTop:"16px", marginBottom:"12px" }}>{o.description}</p>
                     <div style={{ display:"flex", gap:"8px", flexWrap:"wrap" }}>
                       {o.levels.map(l => <span key={l} style={{ fontSize:"9px", padding:"3px 8px", border:`1px solid ${D.border}`, color:D.mid, borderRadius:"3px" }}>Level {l}</span>)}
                     </div>
@@ -149,18 +149,18 @@ export default function OpportunityDatabase({ isPro=false, onUpgrade }) {
         {/* Paywall */}
         {locked && (
           <div style={{ marginTop:"1px", background:D.dark, padding:"48px 32px", textAlign:"center", border:`1px solid ${D.border}` }}>
-            <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"28px", fontStyle:"italic", color:D.white, marginBottom:"12px" }}>
+            <div style={{ fontFamily:"'Playfair Display',serif", fontSize:"28px", fontStyle:"italic", color:D.white, marginBottom:"12px" }}>
               {filtered.length - 5} more opportunities unlocked with Pro.
             </div>
             <p style={{ fontSize:"11px", color:D.mid, marginBottom:"24px" }}>Residencies, grants, open calls, fairs — filtered for your level.</p>
-            <button onClick={onUpgrade} style={{ padding:"14px 40px", background:D.white, border:"none", color:D.black, fontFamily:"monospace", fontSize:"10px", fontWeight:600, letterSpacing:"0.22em", textTransform:"uppercase", cursor:"pointer", borderRadius:"4px" }}>
+            <button onClick={onUpgrade} style={{ padding:"14px 40px", background:D.white, border:"1px solid rgba(10,10,10,0.8)", color:D.black, fontFamily:"monospace", fontSize:"10px", fontWeight:600, letterSpacing:"0.22em", textTransform:"uppercase", cursor:"pointer", borderRadius:"4px" }}>
               Unlock Full Database →
             </button>
           </div>
         )}
 
         {filtered.length === 0 && (
-          <div style={{ padding:"60px 32px", textAlign:"center", color:D.mid, fontFamily:"'Cormorant Garamond',serif", fontSize:"22px", fontStyle:"italic" }}>
+          <div style={{ padding:"60px 32px", textAlign:"center", color:D.mid, fontFamily:"'Playfair Display',serif", fontSize:"22px", fontStyle:"italic" }}>
             No opportunities match your filters.
           </div>
         )}
