@@ -97,8 +97,10 @@ const HeroImage = () => (
   </div>
 );
 
-export default function Landing({ onNavigate, isPro, onUpgrade }) {
-  const [lang, setLang] = useState(() => typeof navigator!=="undefined" && navigator.language?.startsWith("es") ? "es" : "en");
+export default function Landing({ onNavigate, isPro, onUpgrade, lang:langProp, setLang:setLangProp }) {
+  const [langLocal, setLangLocal] = useState(() => typeof navigator!=="undefined" && navigator.language?.startsWith("es") ? "es" : "en");
+  const lang = langProp || langLocal;
+  const setLang = setLangProp || setLangLocal;
   const [hovL, setHovL] = useState(null);
   const T = COPY[lang];
   const LC = { 1:"#404040", 2:"#585858", 3:"#707070", 4:"#909090", 5:"#b0b0b0" };
@@ -135,7 +137,7 @@ export default function Landing({ onNavigate, isPro, onUpgrade }) {
       <nav style={{ position:"fixed",top:0,left:0,right:0,zIndex:100,height:"64px",padding:"0 40px",display:"flex",alignItems:"center",justifyContent:"space-between",background:"rgba(255,255,255,0.97)",backdropFilter:"blur(20px)",borderBottom:`1px solid ${D.border}` }}>
         <button onClick={()=>{}} style={{ display:"flex",alignItems:"center",gap:"12px",background:"none",border:"none",cursor:"pointer" }}>
           <Logo size={30} />
-          <span style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"22px",fontWeight:600,color:D.white }}>
+          <span style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"22px",fontWeight:400,color:D.white }}>
             Str<span style={{ color:D.accent,fontStyle:"italic" }}>a</span>tum
           </span>
         </button>
@@ -160,7 +162,7 @@ export default function Landing({ onNavigate, isPro, onUpgrade }) {
         <div style={{ position:"absolute",inset:0,background:"linear-gradient(to right,rgba(0,0,0,0.65) 0%,transparent 65%)" }} />
         <div style={{ position:"relative",zIndex:2,padding:"0 56px",maxWidth:"960px" }}>
           <div className="f1" style={{ fontSize:"9px",letterSpacing:"0.5em",textTransform:"uppercase",color:"rgba(255,255,255,0.55)",marginBottom:"20px" }}>{T.tagline}</div>
-          <h1 className="f2" style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"clamp(52px,9vw,118px)",fontWeight:800,lineHeight:0.9,letterSpacing:"-0.02em",color:"#ffffff",marginBottom:"24px",textTransform:"uppercase" }}>
+          <h1 className="f2" style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"clamp(52px,9vw,118px)",fontWeight:400,lineHeight:0.9,letterSpacing:"-0.02em",color:"#ffffff",marginBottom:"24px",textTransform:"uppercase" }}>
             {T.hero1}<br/>{T.hero2}
           </h1>
           <p className="f3" style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"clamp(18px,2.2vw,26px)",fontWeight:300,color:"rgba(255,255,255,0.75)",lineHeight:1.55,marginBottom:"36px",maxWidth:"500px" }}>
@@ -181,7 +183,7 @@ export default function Landing({ onNavigate, isPro, onUpgrade }) {
         <div className="stat-grid" style={{ display:"grid",gridTemplateColumns:"repeat(4,1fr)" }}>
           {T.stats.map(([n,l],i)=>(
             <div key={l} style={{ padding:"32px 20px",textAlign:"center",borderRight:i<3?"1px solid rgba(255,255,255,0.08)":"none" }}>
-              <div style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"48px",fontWeight:600,color:"#ffffff",lineHeight:1 }}>{n}</div>
+              <div style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"48px",fontWeight:400,color:"#ffffff",lineHeight:1 }}>{n}</div>
               <div style={{ fontFamily:"'DM Mono',monospace",fontSize:"9px",letterSpacing:"0.2em",textTransform:"uppercase",color:"rgba(255,255,255,0.5)",marginTop:"6px" }}>{l}</div>
             </div>
           ))}
@@ -193,13 +195,13 @@ export default function Landing({ onNavigate, isPro, onUpgrade }) {
         <div style={{ maxWidth:"1100px",margin:"0 auto" }}>
           <div style={{ marginBottom:"56px" }}>
             <div style={{ fontSize:"9px",letterSpacing:"0.5em",textTransform:"uppercase",color:D.accent,marginBottom:"14px" }}>{T.how}</div>
-            <h2 style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"clamp(34px,5vw,62px)",fontWeight:800,color:D.white,lineHeight:1,textTransform:"uppercase" }}>{T.howTitle}</h2>
+            <h2 style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"clamp(34px,5vw,62px)",fontWeight:400,color:D.white,lineHeight:1,textTransform:"uppercase" }}>{T.howTitle}</h2>
           </div>
           <div className="how-grid" style={{ display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"1px",background:D.border }}>
             {T.steps.map((s,i)=>(
               <div key={i} style={{ background:D.dark,padding:"36px 26px",borderTop:`3px solid ${i===0?"rgba(10,10,10,0.7)":"transparent"}` }}>
                 <div style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"48px",fontWeight:300,color:i===0?D.white:D.muted,lineHeight:1,marginBottom:"18px",opacity:i===0?1:0.35 }}>{s.n}</div>
-                <div style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"20px",fontWeight:600,color:D.white,lineHeight:1.2,marginBottom:"10px" }}>{s.title}</div>
+                <div style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"20px",fontWeight:400,color:D.white,lineHeight:1.2,marginBottom:"10px" }}>{s.title}</div>
                 <div style={{ fontSize:"11px",color:D.mid,lineHeight:1.8 }}>{s.desc}</div>
               </div>
             ))}
@@ -222,7 +224,7 @@ export default function Landing({ onNavigate, isPro, onUpgrade }) {
         <div className="lv-grid" style={{ maxWidth:"1100px",margin:"0 auto",display:"grid",gridTemplateColumns:"1fr 1fr",gap:"80px",alignItems:"start" }}>
           <div>
             <div style={{ fontSize:"9px",letterSpacing:"0.5em",textTransform:"uppercase",color:D.accent,marginBottom:"14px" }}>{T.levels}</div>
-            <h2 style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"clamp(34px,5vw,58px)",fontWeight:600,color:D.white,lineHeight:1,textTransform:"uppercase",marginBottom:"28px" }}>{T.levelsTitle}</h2>
+            <h2 style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"clamp(34px,5vw,58px)",fontWeight:400,color:D.white,lineHeight:1,textTransform:"uppercase",marginBottom:"28px" }}>{T.levelsTitle}</h2>
             <button className="btn btn-g" onClick={()=>onNavigate("assessment")} style={{ padding:"13px 36px",fontFamily:"monospace",fontSize:"10px",fontWeight:600,letterSpacing:"0.22em",textTransform:"uppercase",borderRadius:"4px" }}>{T.cta1}</button>
           </div>
           <div>
@@ -252,7 +254,7 @@ export default function Landing({ onNavigate, isPro, onUpgrade }) {
         <div style={{ maxWidth:"1100px",margin:"0 auto" }}>
           <div style={{ marginBottom:"52px" }}>
             <div style={{ fontSize:"9px",letterSpacing:"0.5em",textTransform:"uppercase",color:D.accent,marginBottom:"14px" }}>{T.platform}</div>
-            <h2 style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"clamp(34px,5vw,62px)",fontWeight:600,color:D.white,lineHeight:1,textTransform:"uppercase" }}>
+            <h2 style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"clamp(34px,5vw,62px)",fontWeight:400,color:D.white,lineHeight:1,textTransform:"uppercase" }}>
               {lang==="en"?"Everything\nyou need.":"Todo lo que\nnecesitas."}
             </h2>
           </div>
@@ -276,7 +278,7 @@ export default function Landing({ onNavigate, isPro, onUpgrade }) {
         <div style={{ position:"absolute",inset:0,background:"radial-gradient(ellipse 70% 70% at 50% 50%,rgba(245,244,240,0.04),transparent 70%)" }} />
         <div style={{ position:"relative",zIndex:2,textAlign:"center",maxWidth:"680px",padding:"0 40px" }}>
           <div style={{ display:"flex",justifyContent:"center",marginBottom:"28px",animation:"float 5s ease-in-out infinite",opacity:0.7 }}><Logo size={60} color="#ffffff" /></div>
-          <h2 style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"clamp(38px,6vw,72px)",fontWeight:600,color:"#ffffff",lineHeight:0.95,textTransform:"uppercase",marginBottom:"14px" }}>
+          <h2 style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"clamp(38px,6vw,72px)",fontWeight:400,color:"#ffffff",lineHeight:0.95,textTransform:"uppercase",marginBottom:"14px" }}>
             {T.finalTitle}<br/><span style={{ color:"rgba(255,255,255,0.6)",fontStyle:"italic" }}>{T.finalSub}</span>
           </h2>
           <p style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"18px",color:"rgba(255,255,255,0.5)",marginBottom:"32px" }}>{T.finalNote}</p>
@@ -288,7 +290,7 @@ export default function Landing({ onNavigate, isPro, onUpgrade }) {
       <footer style={{ padding:"32px 48px",background:D.black,borderTop:`1px solid ${D.border}`,display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:"16px" }}>
         <div style={{ display:"flex",alignItems:"center",gap:"10px" }}>
           <Logo size={22} />
-          <span style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"18px",fontWeight:600,color:D.white }}>Str<span style={{ color:D.accent,fontStyle:"italic" }}>a</span>tum</span>
+          <span style={{ fontFamily:"'Bodoni Moda',serif",fontSize:"18px",fontWeight:400,color:D.white }}>Str<span style={{ color:D.accent,fontStyle:"italic" }}>a</span>tum</span>
         </div>
         <div style={{ fontSize:"9px",letterSpacing:"0.2em",textTransform:"uppercase",color:D.muted }}>{T.tagline}</div>
         <div style={{ fontSize:"9px",color:D.muted }}>© 2026 Stratum</div>
