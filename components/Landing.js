@@ -1,159 +1,258 @@
 import { useState } from "react";
 
 const D = {
-  bg:"#f2f2f0", bg2:"#eaeae7", white:"#ffffff",
-  ink:"#1a1a18", ink2:"#2c2c2a", mid:"#6b6b68", muted:"#9a9a96",
-  border:"rgba(26,26,24,0.08)", borderMed:"rgba(26,26,24,0.14)",
-  gold:"#c8a84b", goldL:"rgba(200,168,75,0.12)",
-  L:{ 1:"#8a9db5", 2:"#7a9080", 3:"#b8a060", 4:"#b86040", 5:"#c8a84b" },
+  black:"#0a0a0a", dark:"#111111", dark2:"#1a1a1a",
+  white:"#f5f4f0", gold:"#c8a84b", goldD:"#a8882b",
+  mid:"#888884", muted:"#555552", border:"rgba(245,244,240,0.08)",
 };
 
-const LogoMark = ({ size=32, dark=false }) => (
-  <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
-    <rect x="8"  y="72" width="84" height="17" rx="5" fill={dark?"#f2f2f0":"#1a1a18"} opacity="0.85"/>
-    <rect x="15" y="53" width="70" height="14" rx="4" fill={dark?"#f2f2f0":"#1a1a18"} opacity="0.58"/>
-    <rect x="22" y="36" width="56" height="13" rx="4" fill={dark?"#f2f2f0":"#1a1a18"} opacity="0.34"/>
-    <rect x="29" y="21" width="42" height="11" rx="3" fill={dark?"#f2f2f0":"#1a1a18"} opacity="0.18"/>
-    <rect x="35" y="8"  width="30" height="10" rx="3" fill="#c8a84b"/>
-  </svg>
+const COPY = {
+  en: {
+    tagline:"ARTIST CAREER INTELLIGENCE",
+    hero1:"THE ART WORLD", hero2:"HAS A PATH.",
+    hero3:"Most artists never see it.", hero4:"Stratum maps the way.",
+    cta1:"Begin Assessment →", cta2:"Browse Opportunities",
+    how:"HOW IT WORKS", howTitle:"Four steps to your next level.",
+    steps:[
+      { n:"01", title:"Take the Assessment", desc:"Answer questions about your exhibition history, press, sales, and institutional recognition. Our AI places you on the 5-level career system in minutes." },
+      { n:"02", title:"See Your Level",       desc:"Understand exactly where you stand — what you've built, what's missing, and the specific credentials you need to reach the next level." },
+      { n:"03", title:"Get Your Missions",    desc:"A prioritised list of concrete actions tailored to your level: which residencies to apply for, which galleries to approach, what to build next." },
+      { n:"04", title:"Track Your Climb",     desc:"Use the opportunity database, gallery matcher, and statement builder to execute. Return to reassess as your career grows." },
+    ],
+    levels:"THE FIVE LEVELS", levelsTitle:"Know where you stand.",
+    levelData:[
+      { n:5, name:"The Institutional Artist", desc:"Biennials, museum shows, permanent collections, monograph" },
+      { n:4, name:"The Market Artist",        desc:"Gallery rep, art fairs, international exhibitions, major grants" },
+      { n:3, name:"The Emerging Voice",       desc:"3–7 solo shows, commercial gallery, regional press, residencies" },
+      { n:2, name:"The Local Presence",       desc:"1–2 solo shows, local press, small sales, emerging collector base" },
+      { n:1, name:"The Foundation",           desc:"First group shows, developing statement, finding voice" },
+    ],
+    platform:"THE PLATFORM",
+    features:[
+      { icon:"∴", title:"AI Career Assessment",  desc:"Your level, your gaps, your mission list. In minutes.", free:true,  nav:"assessment"   },
+      { icon:"⊕", title:"Opportunity Database",  desc:"80+ residencies, grants, fairs — filtered for your level.", free:true,  nav:"opportunities" },
+      { icon:"◎", title:"Gallery Matching",      desc:"30+ galleries ranked by fit. With outreach templates.", free:false, nav:"galleries"     },
+      { icon:"✍", title:"Statement Builder",     desc:"Upload work. Get a professional statement, CV, and pitches.", free:false, nav:"portfolio"     },
+    ],
+    quoteText:"I built this out of my own struggle. Six years making work with no map.",
+    quoteBy:"The Founder — Artist, Level 3",
+    finalTitle:"Your career has a level.",
+    finalSub:"Find out which one.",
+    finalNote:"Free assessment. No account required.",
+    finalCTA:"Begin Your Assessment →",
+    stats:[["5","Career Levels"],["80+","Opportunities"],["30+","Gallery Profiles"],["Free","To Start"]],
+  },
+  es: {
+    tagline:"INTELIGENCIA PARA CARRERAS ARTÍSTICAS",
+    hero1:"EL MUNDO DEL", hero2:"ARTE TIENE UN CAMINO.",
+    hero3:"La mayoría de los artistas nunca lo ven.", hero4:"Stratum traza la ruta.",
+    cta1:"Comenzar Evaluación →", cta2:"Ver Oportunidades",
+    how:"CÓMO FUNCIONA", howTitle:"Cuatro pasos a tu siguiente nivel.",
+    steps:[
+      { n:"01", title:"Haz la Evaluación",      desc:"Responde preguntas sobre tu historial de exposiciones, prensa, ventas y reconocimiento institucional. Nuestra IA te ubica en el sistema de 5 niveles en minutos." },
+      { n:"02", title:"Conoce Tu Nivel",         desc:"Entiende exactamente dónde estás — lo que has construido, lo que falta, y las credenciales específicas que necesitas para el siguiente nivel." },
+      { n:"03", title:"Recibe Tus Misiones",     desc:"Una lista priorizada de acciones concretas para tu nivel: qué residencias solicitar, qué galerías abordar, qué construir después." },
+      { n:"04", title:"Rastrea Tu Ascenso",      desc:"Usa la base de datos de oportunidades, el buscador de galerías y el constructor de declaraciones. Regresa a evaluar conforme crece tu carrera." },
+    ],
+    levels:"LOS CINCO NIVELES", levelsTitle:"Sabe dónde estás.",
+    levelData:[
+      { n:5, name:"El Artista Institucional", desc:"Bienales, exposiciones en museos, colecciones permanentes, monografía" },
+      { n:4, name:"El Artista de Mercado",   desc:"Representación galería, ferias de arte, exposiciones internacionales, becas importantes" },
+      { n:3, name:"La Voz Emergente",        desc:"3–7 exposiciones individuales, galería comercial, prensa regional, residencias" },
+      { n:2, name:"La Presencia Local",      desc:"1–2 exposiciones individuales, prensa local, ventas pequeñas, coleccionistas emergentes" },
+      { n:1, name:"La Fundación",            desc:"Primeras exposiciones colectivas, desarrollando declaración artística, encontrando voz" },
+    ],
+    platform:"LA PLATAFORMA",
+    features:[
+      { icon:"∴", title:"Evaluación IA de Carrera",  desc:"Tu nivel, tus brechas, tu lista de misiones. En minutos.", free:true,  nav:"assessment"   },
+      { icon:"⊕", title:"Base de Oportunidades",     desc:"80+ residencias, becas, ferias — filtradas para tu nivel.", free:true,  nav:"opportunities" },
+      { icon:"◎", title:"Buscador de Galerías",      desc:"30+ galerías clasificadas por compatibilidad. Con plantillas de contacto.", free:false, nav:"galleries"     },
+      { icon:"✍", title:"Constructor de Declaración",desc:"Sube tu obra. Obtén declaración artística, CV y pitches profesionales.", free:false, nav:"portfolio"     },
+    ],
+    quoteText:"Lo construí desde mi propia lucha. Seis años haciendo obra sin un mapa.",
+    quoteBy:"El Fundador — Artista, Nivel 3",
+    finalTitle:"Tu carrera tiene un nivel.",
+    finalSub:"Descubre cuál es.",
+    finalNote:"Evaluación gratuita. Sin cuenta requerida.",
+    finalCTA:"Comenzar Tu Evaluación →",
+    stats:[["5","Niveles de Carrera"],["80+","Oportunidades"],["30+","Perfiles de Galería"],["Gratis","Para Empezar"]],
+  },
+};
+
+// Faithful recreation of the uploaded logo —
+// 3 isometric stacked layers (diamond/parallelogram), dark to black, white gaps, gold top
+const Logo = ({ size=36, invert=false }) => {
+  const base = invert ? "#0a0a0a" : "#f5f4f0";
+  const bg   = invert ? "#f5f4f0" : "#0a0a0a";
+  return (
+    <svg width={size} height={size} viewBox="0 0 100 100" fill="none">
+      {/* Bottom layer — blackest */}
+      <path d="M10 82 L50 100 L90 82 L50 64 Z" fill={base} opacity="1"/>
+      {/* Gap */}
+      <path d="M10 76 L50 94 L90 76 L50 58 Z" fill={bg}/>
+      {/* Middle layer */}
+      <path d="M10 72 L50 90 L90 72 L50 54 Z" fill={base} opacity="0.65"/>
+      {/* Gap */}
+      <path d="M10 66 L50 84 L90 66 L50 48 Z" fill={bg}/>
+      {/* Top layer — lightest grey */}
+      <path d="M10 62 L50 80 L90 62 L50 44 Z" fill={base} opacity="0.38"/>
+      {/* Gap */}
+      <path d="M10 56 L50 74 L90 56 L50 38 Z" fill={bg}/>
+      {/* Gold diamond cap */}
+      <path d="M50 16 L90 34 L50 52 L10 34 Z" fill="#c8a84b"/>
+    </svg>
+  );
+};
+
+const PhotoPlaceholder = ({ label="" }) => (
+  <div style={{ position:"absolute", inset:0, background:"linear-gradient(160deg,#1e1e1e,#0a0a0a)", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center" }}>
+    <div style={{ position:"absolute", inset:0, backgroundImage:"linear-gradient(rgba(200,168,75,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(200,168,75,0.025) 1px,transparent 1px)", backgroundSize:"48px 48px" }} />
+    <div style={{ opacity:0.1, marginBottom:"12px" }}><Logo size={56} /></div>
+    <div style={{ fontSize:"9px", letterSpacing:"0.3em", textTransform:"uppercase", color:"rgba(245,244,240,0.18)", fontFamily:"monospace", textAlign:"center", padding:"0 20px" }}>{label || "PHOTO COMING SOON"}</div>
+  </div>
 );
 
 export default function Landing({ onNavigate, isPro, onUpgrade }) {
-  const [hoveredLevel, setHoveredLevel] = useState(null);
-  const [hoveredFeat,  setHoveredFeat]  = useState(null);
-
-  const LEVELS = [
-    { n:5, name:"The Institutional Artist", desc:"Biennials, museum shows, permanent collections", w:"100%" },
-    { n:4, name:"The Market Artist",        desc:"Gallery rep, art fairs, international exhibitions", w:"82%" },
-    { n:3, name:"The Emerging Voice",       desc:"3–7 solo shows, commercial gallery, residencies", w:"65%" },
-    { n:2, name:"The Local Presence",       desc:"1–2 solo shows, local press, consistent sales", w:"48%" },
-    { n:1, name:"The Foundation",           desc:"First group shows, artist statement, finding voice", w:"32%" },
-  ];
-
-  const FEATURES = [
-    { icon:"∴", title:"AI Career Assessment",  desc:"Upload your CV and statement. Our AI places you on the level system instantly — with scores, gaps, and a personalised mission list.", nav:"assessment",   free:true  },
-    { icon:"⊕", title:"Opportunity Database",  desc:"80+ residencies, grants, open calls, art fairs, and biennials. Filtered by your level, discipline, and geography.", nav:"opportunities", free:true  },
-    { icon:"◎", title:"Gallery Matching",      desc:"30+ galleries matched to your exact practice — with entry strategy, fit analysis, and a personalised outreach template.", nav:"galleries",     free:false },
-    { icon:"✍", title:"Statement Builder",     desc:"Upload your artwork. AI analyses visual themes and writes your artist statement, short bio, CV, and gallery pitch openers.", nav:"portfolio",     free:false },
-    { icon:"→", title:"Career Missions",       desc:"Not goals — missions. Specific, prioritised, actionable tasks that move you toward the next level.", nav:"assessment",   free:false },
-    { icon:"◉", title:"Live Deadlines",        desc:"Every opportunity surfaced by urgency. See what's closing this week, what's rolling, and what to prioritise.", nav:"opportunities", free:false },
-  ];
+  const [lang, setLang] = useState(() => typeof navigator!=="undefined" && navigator.language?.startsWith("es") ? "es" : "en");
+  const [hovL, setHovL] = useState(null);
+  const T = COPY[lang];
+  const LC = { 1:"#6a7a8a", 2:"#6a8070", 3:"#a89050", 4:"#a85030", 5:"#c8a84b" };
 
   return (
-    <div style={{ fontFamily:"'DM Mono',monospace", background:D.bg, color:D.ink }}>
+    <div style={{ fontFamily:"'DM Mono',monospace", background:D.black, color:D.white }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap');
-        *{box-sizing:border-box}
-        .btn{transition:all .2s;cursor:pointer}
-        .btn:hover{transform:translateY(-2px)}
-        .btn-gold:hover{background:#b8981e!important;box-shadow:0 12px 32px rgba(200,168,75,0.45)!important}
-        .btn-out:hover{background:${D.ink}!important;color:${D.white}!important}
-        .feat:hover{transform:translateY(-5px)!important;box-shadow:0 20px 56px rgba(26,26,24,0.13)!important}
-        @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-        .f1{animation:fadeUp .8s ease forwards .05s;opacity:0}
-        .f2{animation:fadeUp .8s ease forwards .2s;opacity:0}
-        .f3{animation:fadeUp .8s ease forwards .35s;opacity:0}
-        .f4{animation:fadeUp .8s ease forwards .5s;opacity:0}
-        .f5{animation:fadeUp .8s ease forwards .65s;opacity:0}
-        .f6{animation:fadeUp .8s ease forwards .8s;opacity:0}
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap');
+        *{box-sizing:border-box;margin:0;padding:0}
+        .btn{transition:all .18s;cursor:pointer}
+        .btn-g{background:${D.gold};color:${D.black};border:none}
+        .btn-g:hover{background:${D.goldD}!important;transform:translateY(-2px);box-shadow:0 12px 36px rgba(200,168,75,0.45)!important}
+        .btn-o{background:transparent;border:1px solid rgba(245,244,240,0.22);color:${D.white}}
+        .btn-o:hover{background:${D.white}!important;color:${D.black}!important;transform:translateY(-2px)}
+        .feat:hover{background:#222!important;border-color:rgba(200,168,75,0.35)!important;transform:translateY(-4px)!important}
+        .lbar{transition:width .4s ease}
+        @keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+        .f1{animation:fadeUp .9s ease forwards .1s;opacity:0}
+        .f2{animation:fadeUp .9s ease forwards .25s;opacity:0}
+        .f3{animation:fadeUp .9s ease forwards .4s;opacity:0}
+        .f4{animation:fadeUp .9s ease forwards .55s;opacity:0}
+        .f5{animation:fadeUp .9s ease forwards .7s;opacity:0}
+        @media(max-width:768px){
+          .how-grid{grid-template-columns:1fr 1fr!important}
+          .lv-grid{grid-template-columns:1fr!important}
+          .ft-grid{grid-template-columns:1fr 1fr!important}
+          .stat-grid{grid-template-columns:1fr 1fr!important}
+        }
       `}</style>
 
       {/* NAV */}
-      <nav style={{ position:"fixed", top:0, left:0, right:0, zIndex:100, height:"60px", padding:"0 40px", display:"flex", alignItems:"center", justifyContent:"space-between", background:"rgba(242,242,240,0.93)", backdropFilter:"blur(16px)", borderBottom:`1px solid ${D.border}` }}>
-        <div style={{ display:"flex", alignItems:"center", gap:"10px" }}>
-          <LogoMark size={26} />
-          <span style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"20px", fontWeight:400, color:D.ink }}>
-            Str<span style={{ color:D.gold, fontStyle:"italic" }}>a</span>tum
+      <nav style={{ position:"fixed",top:0,left:0,right:0,zIndex:100,height:"64px",padding:"0 40px",display:"flex",alignItems:"center",justifyContent:"space-between",background:"rgba(10,10,10,0.95)",backdropFilter:"blur(20px)",borderBottom:`1px solid ${D.border}` }}>
+        <button onClick={()=>{}} style={{ display:"flex",alignItems:"center",gap:"12px",background:"none",border:"none",cursor:"pointer" }}>
+          <Logo size={30} />
+          <span style={{ fontFamily:"'Cormorant Garamond',serif",fontSize:"22px",fontWeight:600,color:D.white }}>
+            Str<span style={{ color:D.gold,fontStyle:"italic" }}>a</span>tum
           </span>
-        </div>
-        <div style={{ display:"flex", gap:"8px" }}>
-          <button className="btn btn-out" onClick={() => onNavigate("assessment")} style={{ padding:"7px 18px", background:"transparent", color:D.mid, fontFamily:"monospace", fontSize:"9px", letterSpacing:"0.2em", textTransform:"uppercase", border:`1px solid ${D.borderMed}`, borderRadius:"6px", cursor:"pointer" }}>
-            Assessment
-          </button>
+        </button>
+        <div style={{ display:"flex",gap:"8px",alignItems:"center" }}>
+          <div style={{ display:"flex",border:`1px solid ${D.border}`,borderRadius:"4px",overflow:"hidden",marginRight:"4px" }}>
+            {["en","es"].map(l=>(
+              <button key={l} onClick={()=>setLang(l)} className="btn" style={{ padding:"5px 12px",background:lang===l?D.gold:"transparent",color:lang===l?D.black:D.mid,fontFamily:"monospace",fontSize:"9px",fontWeight:600,letterSpacing:"0.1em",border:"none",cursor:"pointer" }}>{l.toUpperCase()}</button>
+            ))}
+          </div>
+          <button className="btn btn-o" onClick={()=>onNavigate("assessment")} style={{ padding:"8px 18px",borderRadius:"4px",fontFamily:"monospace",fontSize:"9px",letterSpacing:"0.18em",textTransform:"uppercase" }}>{lang==="en"?"Assessment":"Evaluación"}</button>
           {isPro
-            ? <button style={{ padding:"7px 18px", background:D.goldL, color:D.gold, fontFamily:"monospace", fontSize:"9px", fontWeight:600, letterSpacing:"0.2em", textTransform:"uppercase", border:`1px solid rgba(200,168,75,0.3)`, borderRadius:"6px", cursor:"default" }}>✦ Pro</button>
-            : <button className="btn btn-gold" onClick={() => onNavigate("assessment")} style={{ padding:"7px 18px", background:D.gold, color:D.white, fontFamily:"monospace", fontSize:"9px", fontWeight:600, letterSpacing:"0.2em", textTransform:"uppercase", border:"none", borderRadius:"6px", cursor:"pointer", boxShadow:"0 4px 16px rgba(200,168,75,0.3)" }}>Begin →</button>
+            ? <span style={{ padding:"8px 16px",background:"rgba(200,168,75,0.1)",border:"1px solid rgba(200,168,75,0.3)",color:D.gold,fontFamily:"monospace",fontSize:"9px",letterSpacing:"0.15em",borderRadius:"4px" }}>✦ PRO</span>
+            : <button className="btn btn-g" onClick={()=>onNavigate("assessment")} style={{ padding:"8px 20px",fontFamily:"monospace",fontSize:"9px",fontWeight:600,letterSpacing:"0.18em",textTransform:"uppercase",borderRadius:"4px",boxShadow:"0 4px 16px rgba(200,168,75,0.28)" }}>{T.cta1}</button>
           }
         </div>
       </nav>
 
       {/* HERO */}
-      <section style={{ minHeight:"100vh", display:"flex", alignItems:"center", justifyContent:"center", paddingTop:"60px", position:"relative", overflow:"hidden" }}>
-        <div style={{ position:"absolute", inset:0, backgroundImage:`linear-gradient(${D.border} 1px,transparent 1px),linear-gradient(90deg,${D.border} 1px,transparent 1px)`, backgroundSize:"64px 64px" }} />
-
-        {/* Floating logo marks */}
-        {[{top:"14%",left:"4%",s:56,d:"0s"},{top:"72%",left:"2%",s:40,d:"1.4s"},{top:"18%",right:"3%",s:48,d:"0.7s"},{top:"68%",right:"5%",s:36,d:"2s"}].map((p,i)=>(
-          <div key={i} style={{ position:"absolute", top:p.top, left:p.left, right:p.right, opacity:0.07, animation:`float ${4+i}s ease-in-out infinite`, animationDelay:p.d }}>
-            <LogoMark size={p.s} />
-          </div>
-        ))}
-
-        <div style={{ textAlign:"center", position:"relative", zIndex:2, maxWidth:"740px", padding:"0 32px" }}>
-          <div className="f1" style={{ display:"flex", justifyContent:"center", marginBottom:"28px" }}>
-            <div style={{ animation:"float 5s ease-in-out infinite" }}><LogoMark size={68} /></div>
-          </div>
-          <div className="f2" style={{ fontSize:"9px", letterSpacing:"0.45em", textTransform:"uppercase", color:D.gold, marginBottom:"18px" }}>Artist Career Intelligence</div>
-          <h1 className="f3" style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"clamp(64px,11vw,132px)", fontWeight:300, lineHeight:0.9, letterSpacing:"-0.02em", color:D.ink, marginBottom:"28px" }}>
-            Str<span style={{ color:D.gold, fontStyle:"italic" }}>a</span>tum
+      <section style={{ height:"100vh",position:"relative",overflow:"hidden",display:"flex",alignItems:"flex-end",paddingBottom:"80px",paddingTop:"64px" }}>
+        <PhotoPlaceholder label="ARTIST PHOTO — REPLACE WITH YOUR IMAGE" />
+        <div style={{ position:"absolute",inset:0,background:"linear-gradient(to top,rgba(0,0,0,0.95) 0%,rgba(0,0,0,0.55) 45%,rgba(0,0,0,0.1) 100%)" }} />
+        <div style={{ position:"absolute",inset:0,background:"linear-gradient(to right,rgba(0,0,0,0.65) 0%,transparent 65%)" }} />
+        <div style={{ position:"relative",zIndex:2,padding:"0 56px",maxWidth:"960px" }}>
+          <div className="f1" style={{ fontSize:"9px",letterSpacing:"0.5em",textTransform:"uppercase",color:D.gold,marginBottom:"20px" }}>{T.tagline}</div>
+          <h1 className="f2" style={{ fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(52px,9vw,118px)",fontWeight:600,lineHeight:0.9,letterSpacing:"-0.02em",color:D.white,marginBottom:"24px",textTransform:"uppercase" }}>
+            {T.hero1}<br/>{T.hero2}
           </h1>
-          <p className="f4" style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"21px", fontWeight:300, color:D.mid, lineHeight:1.7, marginBottom:"40px", maxWidth:"460px", margin:"0 auto 40px" }}>
-            The art world has a path.<br/>
-            Most artists never see it.<br/>
-            <em style={{ color:D.ink }}>Stratum maps the way.</em>
+          <p className="f3" style={{ fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(18px,2.2vw,26px)",fontWeight:300,color:"rgba(245,244,240,0.7)",lineHeight:1.55,marginBottom:"36px",maxWidth:"500px" }}>
+            {T.hero3}<br/><em style={{ color:D.white }}>{T.hero4}</em>
           </p>
-          <div className="f5" style={{ display:"flex", gap:"12px", justifyContent:"center", flexWrap:"wrap", marginBottom:"60px" }}>
-            <button className="btn btn-gold" onClick={() => onNavigate("assessment")} style={{ padding:"15px 44px", background:D.gold, color:D.white, fontFamily:"monospace", fontSize:"10px", fontWeight:600, letterSpacing:"0.25em", textTransform:"uppercase", border:"none", borderRadius:"8px", cursor:"pointer", boxShadow:"0 8px 24px rgba(200,168,75,0.35)" }}>
-              Begin Assessment →
-            </button>
-            <button className="btn btn-out" onClick={() => onNavigate("opportunities")} style={{ padding:"15px 44px", background:"transparent", color:D.ink, fontFamily:"monospace", fontSize:"10px", letterSpacing:"0.25em", textTransform:"uppercase", border:`1.5px solid ${D.borderMed}`, borderRadius:"8px", cursor:"pointer" }}>
-              Browse Opportunities
-            </button>
+          <div className="f4" style={{ display:"flex",gap:"12px",flexWrap:"wrap" }}>
+            <button className="btn btn-g" onClick={()=>onNavigate("assessment")} style={{ padding:"16px 44px",fontFamily:"monospace",fontSize:"10px",fontWeight:600,letterSpacing:"0.25em",textTransform:"uppercase",borderRadius:"4px",boxShadow:"0 8px 28px rgba(200,168,75,0.38)" }}>{T.cta1}</button>
+            <button className="btn btn-o" onClick={()=>onNavigate("opportunities")} style={{ padding:"16px 44px",fontFamily:"monospace",fontSize:"10px",letterSpacing:"0.25em",textTransform:"uppercase",borderRadius:"4px" }}>{T.cta2}</button>
           </div>
-          <div className="f6" style={{ display:"flex", gap:"40px", justifyContent:"center" }}>
-            {[["5","Career Levels"],["30+","Gallery Profiles"],["80+","Opportunities"],["Free","To Start"]].map(([n,l])=>(
-              <div key={l} style={{ textAlign:"center" }}>
-                <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"34px", fontWeight:300, color:D.gold, lineHeight:1 }}>{n}</div>
-                <div style={{ fontSize:"9px", letterSpacing:"0.2em", textTransform:"uppercase", color:D.muted, marginTop:"4px" }}>{l}</div>
+        </div>
+        <div className="f5" style={{ position:"absolute",top:"80px",right:"56px",opacity:0.22,animation:"float 6s ease-in-out infinite" }}>
+          <Logo size={100} />
+        </div>
+      </section>
+
+      {/* STATS BAR */}
+      <section style={{ background:D.gold }}>
+        <div className="stat-grid" style={{ display:"grid",gridTemplateColumns:"repeat(4,1fr)" }}>
+          {T.stats.map(([n,l],i)=>(
+            <div key={l} style={{ padding:"26px 20px",textAlign:"center",borderRight:i<3?"1px solid rgba(10,10,10,0.12)":"none" }}>
+              <div style={{ fontFamily:"'Cormorant Garamond',serif",fontSize:"44px",fontWeight:600,color:D.black,lineHeight:1 }}>{n}</div>
+              <div style={{ fontSize:"9px",letterSpacing:"0.2em",textTransform:"uppercase",color:"rgba(10,10,10,0.6)",marginTop:"4px" }}>{l}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* HOW IT WORKS */}
+      <section style={{ padding:"100px 48px",background:D.dark }}>
+        <div style={{ maxWidth:"1100px",margin:"0 auto" }}>
+          <div style={{ marginBottom:"56px" }}>
+            <div style={{ fontSize:"9px",letterSpacing:"0.5em",textTransform:"uppercase",color:D.gold,marginBottom:"14px" }}>{T.how}</div>
+            <h2 style={{ fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(34px,5vw,62px)",fontWeight:600,color:D.white,lineHeight:1,textTransform:"uppercase" }}>{T.howTitle}</h2>
+          </div>
+          <div className="how-grid" style={{ display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"1px",background:D.border }}>
+            {T.steps.map((s,i)=>(
+              <div key={i} style={{ background:D.dark,padding:"36px 26px",borderTop:`3px solid ${i===0?D.gold:"transparent"}` }}>
+                <div style={{ fontFamily:"'Cormorant Garamond',serif",fontSize:"48px",fontWeight:300,color:i===0?D.gold:D.muted,lineHeight:1,marginBottom:"18px",opacity:i===0?1:0.35 }}>{s.n}</div>
+                <div style={{ fontFamily:"'Cormorant Garamond',serif",fontSize:"20px",fontWeight:600,color:D.white,lineHeight:1.2,marginBottom:"10px" }}>{s.title}</div>
+                <div style={{ fontSize:"11px",color:D.mid,lineHeight:1.8 }}>{s.desc}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* LEVEL SYSTEM */}
-      <section style={{ padding:"100px 40px", background:D.white }}>
-        <div style={{ maxWidth:"1100px", margin:"0 auto", display:"grid", gridTemplateColumns:"1fr 1fr", gap:"80px", alignItems:"start" }}>
-          <div style={{ paddingTop:"16px" }}>
-            <div style={{ fontSize:"9px", letterSpacing:"0.35em", textTransform:"uppercase", color:D.gold, marginBottom:"14px" }}>The Level System</div>
-            <h2 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"50px", fontWeight:300, lineHeight:1.05, color:D.ink, marginBottom:"20px" }}>
-              Five levels.<br/><em style={{ color:D.mid }}>One clear path.</em>
-            </h2>
-            <p style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"17px", color:D.mid, lineHeight:1.8, marginBottom:"32px" }}>
-              The contemporary art world operates on an invisible hierarchy. Stratum makes it visible — mapping your position, naming the credentials you need, and surfacing the right opportunities at every stage.
-            </p>
-            <button className="btn btn-gold" onClick={() => onNavigate("assessment")} style={{ padding:"13px 36px", background:D.gold, color:D.white, fontFamily:"monospace", fontSize:"10px", fontWeight:600, letterSpacing:"0.22em", textTransform:"uppercase", border:"none", borderRadius:"8px", cursor:"pointer", boxShadow:"0 6px 20px rgba(200,168,75,0.28)" }}>
-              Find Your Level →
-            </button>
-          </div>
+      {/* QUOTE BREAK */}
+      <section style={{ height:"55vh",position:"relative",overflow:"hidden",display:"flex",alignItems:"center" }}>
+        <PhotoPlaceholder label="STUDIO / WORK PHOTO — REPLACE WITH YOUR IMAGE" />
+        <div style={{ position:"absolute",inset:0,background:"linear-gradient(to right,rgba(0,0,0,0.92) 0%,rgba(0,0,0,0.5) 55%,transparent 100%)" }} />
+        <div style={{ position:"relative",zIndex:2,padding:"0 80px",maxWidth:"660px" }}>
+          <blockquote style={{ fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(22px,3.2vw,40px)",fontWeight:300,fontStyle:"italic",color:D.white,lineHeight:1.55,marginBottom:"22px" }}>"{T.quoteText}"</blockquote>
+          <div style={{ fontSize:"9px",letterSpacing:"0.25em",textTransform:"uppercase",color:D.gold }}>{T.quoteBy}</div>
+        </div>
+      </section>
 
-          {/* Layer stack — mirrors the logo form */}
-          <div style={{ display:"flex", flexDirection:"column", gap:"10px", paddingTop:"8px" }}>
-            {LEVELS.map(({ n, name, desc, w }) => {
-              const isHov = hoveredLevel === n;
-              const c = D.L[n];
+      {/* 5 LEVELS */}
+      <section style={{ padding:"100px 48px",background:D.black }}>
+        <div className="lv-grid" style={{ maxWidth:"1100px",margin:"0 auto",display:"grid",gridTemplateColumns:"1fr 1fr",gap:"80px",alignItems:"start" }}>
+          <div>
+            <div style={{ fontSize:"9px",letterSpacing:"0.5em",textTransform:"uppercase",color:D.gold,marginBottom:"14px" }}>{T.levels}</div>
+            <h2 style={{ fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(34px,5vw,58px)",fontWeight:600,color:D.white,lineHeight:1,textTransform:"uppercase",marginBottom:"28px" }}>{T.levelsTitle}</h2>
+            <button className="btn btn-g" onClick={()=>onNavigate("assessment")} style={{ padding:"13px 36px",fontFamily:"monospace",fontSize:"10px",fontWeight:600,letterSpacing:"0.22em",textTransform:"uppercase",borderRadius:"4px" }}>{T.cta1}</button>
+          </div>
+          <div>
+            {T.levelData.map(({ n,name,desc })=>{
+              const c=LC[n], isH=hovL===n;
               return (
-                <div key={n} onMouseEnter={()=>setHoveredLevel(n)} onMouseLeave={()=>setHoveredLevel(null)} style={{ width:w, alignSelf:"flex-end", transition:"all 0.2s" }}>
-                  <div style={{ padding:"12px 18px", borderRadius:"10px", background: isHov ? D.white : D.bg2, border:`1px solid ${isHov ? c+"40" : D.border}`, borderLeft:`3px solid ${c}`, boxShadow: isHov ? `0 6px 24px rgba(26,26,24,0.10)` : "none", transform: isHov ? "translateX(-6px)" : "none", transition:"all 0.2s" }}>
-                    <div style={{ display:"flex", alignItems:"center", gap:"12px" }}>
-                      <div style={{ width:"28px", height:"28px", borderRadius:"50%", background:`${c}15`, border:`1.5px solid ${c}`, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
-                        <span style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"14px", color:c, fontWeight:400 }}>{n}</span>
-                      </div>
-                      <div>
-                        <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"14px", fontStyle:"italic", color: isHov ? D.ink : D.ink2, transition:"color 0.2s" }}>{name}</div>
-                        <div style={{ fontSize:"9px", color:D.muted, lineHeight:1.5, marginTop:"1px" }}>{desc}</div>
-                      </div>
+                <div key={n} onMouseEnter={()=>setHovL(n)} onMouseLeave={()=>setHovL(null)} style={{ padding:"20px 0",borderBottom:`1px solid ${D.border}`,cursor:"default" }}>
+                  <div style={{ display:"flex",gap:"16px",alignItems:"flex-start",marginBottom:"8px" }}>
+                    <span style={{ fontFamily:"'Cormorant Garamond',serif",fontSize:"30px",fontWeight:300,color:c,lineHeight:1,flexShrink:0,minWidth:"26px" }}>{n}</span>
+                    <div>
+                      <div style={{ fontFamily:"'Cormorant Garamond',serif",fontSize:"17px",fontWeight:600,color:isH?D.white:"rgba(245,244,240,0.75)",transition:"color 0.2s",marginBottom:"3px" }}>{name}</div>
+                      <div style={{ fontSize:"10px",color:D.mid,lineHeight:1.6 }}>{desc}</div>
                     </div>
+                  </div>
+                  <div style={{ height:"1px",background:"rgba(245,244,240,0.05)",marginLeft:"42px" }}>
+                    <div className="lbar" style={{ height:"100%",width:isH?"100%":`${n*20}%`,background:c }} />
                   </div>
                 </div>
               );
@@ -163,67 +262,50 @@ export default function Landing({ onNavigate, isPro, onUpgrade }) {
       </section>
 
       {/* FEATURES */}
-      <section style={{ padding:"100px 40px", background:D.bg }}>
-        <div style={{ maxWidth:"1100px", margin:"0 auto" }}>
-          <div style={{ textAlign:"center", marginBottom:"56px" }}>
-            <div style={{ fontSize:"9px", letterSpacing:"0.35em", textTransform:"uppercase", color:D.gold, marginBottom:"14px" }}>The Platform</div>
-            <h2 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"46px", fontWeight:300, color:D.ink, lineHeight:1.1 }}>
-              Everything you need.<br/><em style={{ color:D.mid }}>Nothing you don't.</em>
+      <section style={{ padding:"100px 48px",background:D.dark }}>
+        <div style={{ maxWidth:"1100px",margin:"0 auto" }}>
+          <div style={{ marginBottom:"52px" }}>
+            <div style={{ fontSize:"9px",letterSpacing:"0.5em",textTransform:"uppercase",color:D.gold,marginBottom:"14px" }}>{T.platform}</div>
+            <h2 style={{ fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(34px,5vw,62px)",fontWeight:600,color:D.white,lineHeight:1,textTransform:"uppercase" }}>
+              {lang==="en"?"Everything\nyou need.":"Todo lo que\nnecesitas."}
             </h2>
           </div>
-          <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:"16px" }}>
-            {FEATURES.map((f,i) => (
-              <div key={i} className="feat" onClick={()=>onNavigate(f.nav)} onMouseEnter={()=>setHoveredFeat(i)} onMouseLeave={()=>setHoveredFeat(null)}
-                style={{ padding:"26px 22px", background:D.white, borderRadius:"12px", border:`1px solid ${D.border}`, boxShadow:"0 2px 8px rgba(26,26,24,0.06)", cursor:"pointer", transition:"all 0.25s" }}>
-                <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:"14px" }}>
-                  <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"28px", color:D.gold, lineHeight:1 }}>{f.icon}</div>
-                  {!f.free && <span style={{ fontSize:"8px", letterSpacing:"0.12em", color:D.gold, background:D.goldL, padding:"3px 7px", borderRadius:"4px", fontWeight:500 }}>PRO</span>}
-                </div>
-                <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"19px", fontWeight:400, color:D.ink, marginBottom:"8px", lineHeight:1.2 }}>{f.title}</div>
-                <div style={{ fontSize:"11px", color:D.mid, lineHeight:1.7 }}>{f.desc}</div>
+          <div className="ft-grid" style={{ display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"16px" }}>
+            {T.features.map((f,i)=>(
+              <div key={i} className="feat" onClick={()=>onNavigate(f.nav)} style={{ padding:"28px 22px",background:D.dark2,border:`1px solid ${D.border}`,cursor:"pointer",transition:"all 0.22s",position:"relative" }}>
+                {!f.free&&<div style={{ position:"absolute",top:"14px",right:"14px",fontSize:"8px",letterSpacing:"0.12em",background:D.gold,color:D.black,padding:"3px 7px",fontWeight:600 }}>PRO</div>}
+                <div style={{ fontFamily:"'Cormorant Garamond',serif",fontSize:"34px",color:D.gold,marginBottom:"14px",lineHeight:1 }}>{f.icon}</div>
+                <div style={{ fontFamily:"'Cormorant Garamond',serif",fontSize:"19px",fontWeight:600,color:D.white,marginBottom:"8px",lineHeight:1.2 }}>{f.title}</div>
+                <div style={{ fontSize:"11px",color:D.mid,lineHeight:1.7 }}>{f.desc}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* FOUNDER QUOTE */}
-      <section style={{ padding:"100px 40px", background:D.white }}>
-        <div style={{ maxWidth:"640px", margin:"0 auto", textAlign:"center" }}>
-          <div style={{ display:"flex", justifyContent:"center", marginBottom:"28px" }}><LogoMark size={44} /></div>
-          <blockquote style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"clamp(20px,3vw,32px)", fontWeight:300, fontStyle:"italic", color:D.ink, lineHeight:1.65, marginBottom:"24px" }}>
-            "I built this out of my own struggle.<br/>
-            Six years making work with no map.<br/>
-            <span style={{ color:D.gold }}>Stratum is the map I needed."</span>
-          </blockquote>
-          <div style={{ fontSize:"9px", letterSpacing:"0.25em", textTransform:"uppercase", color:D.muted }}>The Founder — Artist, Level 3</div>
-        </div>
-      </section>
-
       {/* FINAL CTA */}
-      <section style={{ padding:"100px 40px", background:D.ink, textAlign:"center", position:"relative", overflow:"hidden" }}>
-        <div style={{ position:"absolute", inset:0, backgroundImage:`linear-gradient(rgba(200,168,75,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(200,168,75,0.03) 1px,transparent 1px)`, backgroundSize:"64px 64px" }} />
-        <div style={{ position:"absolute", inset:0, background:"radial-gradient(ellipse 60% 80% at 50% 50%, rgba(200,168,75,0.06), transparent 70%)" }} />
-        <div style={{ position:"relative", zIndex:2, maxWidth:"560px", margin:"0 auto" }}>
-          <div style={{ display:"flex", justifyContent:"center", marginBottom:"28px", opacity:0.5 }}><LogoMark size={52} dark /></div>
-          <h2 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"clamp(34px,5vw,62px)", fontWeight:300, color:"#f2f2f0", lineHeight:1.1, marginBottom:"14px" }}>
-            Your career has a level.<br/><em style={{ color:D.gold }}>Find out which one.</em>
+      <section style={{ height:"70vh",position:"relative",overflow:"hidden",display:"flex",alignItems:"center",justifyContent:"center" }}>
+        <PhotoPlaceholder label="CLOSING PHOTO — REPLACE WITH YOUR IMAGE" />
+        <div style={{ position:"absolute",inset:0,background:"rgba(0,0,0,0.84)" }} />
+        <div style={{ position:"absolute",inset:0,background:"radial-gradient(ellipse 70% 70% at 50% 50%,rgba(200,168,75,0.07),transparent 70%)" }} />
+        <div style={{ position:"relative",zIndex:2,textAlign:"center",maxWidth:"680px",padding:"0 40px" }}>
+          <div style={{ display:"flex",justifyContent:"center",marginBottom:"28px",animation:"float 5s ease-in-out infinite",opacity:0.7 }}><Logo size={60} /></div>
+          <h2 style={{ fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(38px,6vw,72px)",fontWeight:600,color:D.white,lineHeight:0.95,textTransform:"uppercase",marginBottom:"14px" }}>
+            {T.finalTitle}<br/><span style={{ color:D.gold,fontStyle:"italic" }}>{T.finalSub}</span>
           </h2>
-          <p style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"17px", color:"rgba(242,242,240,0.5)", marginBottom:"32px" }}>Free assessment. No account required.</p>
-          <button className="btn btn-gold" onClick={()=>onNavigate("assessment")} style={{ padding:"17px 52px", background:D.gold, color:D.white, fontFamily:"monospace", fontSize:"11px", fontWeight:600, letterSpacing:"0.25em", textTransform:"uppercase", border:"none", borderRadius:"8px", cursor:"pointer", boxShadow:"0 8px 32px rgba(200,168,75,0.4)" }}>
-            Begin Your Assessment →
-          </button>
+          <p style={{ fontFamily:"'Cormorant Garamond',serif",fontSize:"18px",color:"rgba(245,244,240,0.45)",marginBottom:"32px" }}>{T.finalNote}</p>
+          <button className="btn btn-g" onClick={()=>onNavigate("assessment")} style={{ padding:"18px 60px",fontFamily:"monospace",fontSize:"11px",fontWeight:600,letterSpacing:"0.25em",textTransform:"uppercase",borderRadius:"4px",boxShadow:"0 8px 36px rgba(200,168,75,0.45)" }}>{T.finalCTA}</button>
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer style={{ padding:"28px 40px", background:D.ink, borderTop:"1px solid rgba(242,242,240,0.06)", display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:"12px" }}>
-        <div style={{ display:"flex", alignItems:"center", gap:"8px" }}>
-          <LogoMark size={20} dark />
-          <span style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:"16px", fontWeight:300, color:"#f2f2f0" }}>Str<span style={{ color:D.gold, fontStyle:"italic" }}>a</span>tum</span>
+      <footer style={{ padding:"32px 48px",background:D.black,borderTop:`1px solid ${D.border}`,display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:"16px" }}>
+        <div style={{ display:"flex",alignItems:"center",gap:"10px" }}>
+          <Logo size={22} />
+          <span style={{ fontFamily:"'Cormorant Garamond',serif",fontSize:"18px",fontWeight:600,color:D.white }}>Str<span style={{ color:D.gold,fontStyle:"italic" }}>a</span>tum</span>
         </div>
-        <div style={{ fontSize:"9px", letterSpacing:"0.2em", textTransform:"uppercase", color:"rgba(242,242,240,0.3)" }}>Artist Career Intelligence</div>
-        <div style={{ fontSize:"9px", color:"rgba(242,242,240,0.2)" }}>© 2026 Stratum</div>
+        <div style={{ fontSize:"9px",letterSpacing:"0.2em",textTransform:"uppercase",color:D.muted }}>{T.tagline}</div>
+        <div style={{ fontSize:"9px",color:D.muted }}>© 2026 Stratum</div>
       </footer>
     </div>
   );
