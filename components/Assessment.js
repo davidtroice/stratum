@@ -270,6 +270,87 @@ export default function Assessment({ isPro=false, canRun=true, assessCount=0, on
             </div>
           </div>
         )}
+
+        {/* Post-assessment survey */}
+        {survey && survey !== "done" && result && (
+          <div style={{ position:"fixed", inset:0, zIndex:100, background:"rgba(255,255,255,0.85)", backdropFilter:"blur(4px)", display:"flex", alignItems:"center", justifyContent:"center", padding:"24px" }}>
+            <div style={{ background:"#ffffff", border:"1px solid rgba(10,10,10,0.12)", maxWidth:"480px", width:"100%", padding:"40px" }}>
+              <div style={{ fontSize:"9px", letterSpacing:"0.4em", textTransform:"uppercase", color:D.mid, marginBottom:"12px" }}>
+                {lang==="es" ? "Cuéntanos más" : "Help us help you"}
+              </div>
+              <div style={{ fontFamily:"'Bodoni Moda',serif", fontSize:"26px", color:D.white, lineHeight:1.1, marginBottom:"8px" }}>
+                {lang==="es" ? "¿Qué te frenó?" : "What's holding you back?"}
+              </div>
+              <p style={{ fontFamily:"'Bodoni Moda',serif", fontSize:"14px", fontStyle:"italic", color:D.mid, marginBottom:"28px" }}>
+                {lang==="es"
+                  ? "Tus respuestas nos ayudan a personalizar tu experiencia y mejorar Stratum para artistas como tú."
+                  : "Your answers help us personalise your experience and build better tools for artists at your level."}
+              </p>
+
+              {/* Q1 */}
+              <div style={{ marginBottom:"24px" }}>
+                <div style={{ fontSize:"9px", letterSpacing:"0.25em", textTransform:"uppercase", color:D.mid, marginBottom:"10px" }}>
+                  {lang==="es" ? "¿Cuál es tu mayor reto ahora mismo?" : "What's your biggest challenge right now?"}
+                </div>
+                <div style={{ display:"flex", flexWrap:"wrap", gap:"6px" }}>
+                  {CHALLENGES.map(ch => (
+                    <button key={ch} onClick={()=>setSurveyData(d=>({...d,challenge:ch}))}
+                      style={{ padding:"7px 14px", background:surveyData.challenge===ch?"#0a0a0a":"transparent", color:surveyData.challenge===ch?"#ffffff":D.mid, border:"1px solid rgba(10,10,10,0.15)", fontFamily:"'DM Mono',monospace", fontSize:"9px", letterSpacing:"0.1em", cursor:"pointer", transition:"all 0.15s" }}>
+                      {ch}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Q2 */}
+              <div style={{ marginBottom:"24px" }}>
+                <div style={{ fontSize:"9px", letterSpacing:"0.25em", textTransform:"uppercase", color:D.mid, marginBottom:"10px" }}>
+                  {lang==="es" ? "¿Cuál es tu meta principal este año?" : "What's your main goal this year?"}
+                </div>
+                <div style={{ display:"flex", flexWrap:"wrap", gap:"6px" }}>
+                  {GOALS.map(g => (
+                    <button key={g} onClick={()=>setSurveyData(d=>({...d,goal:g}))}
+                      style={{ padding:"7px 14px", background:surveyData.goal===g?"#0a0a0a":"transparent", color:surveyData.goal===g?"#ffffff":D.mid, border:"1px solid rgba(10,10,10,0.15)", fontFamily:"'DM Mono',monospace", fontSize:"9px", letterSpacing:"0.1em", cursor:"pointer", transition:"all 0.15s" }}>
+                      {g}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Q3 */}
+              <div style={{ marginBottom:"28px" }}>
+                <div style={{ fontSize:"9px", letterSpacing:"0.25em", textTransform:"uppercase", color:D.mid, marginBottom:"10px" }}>
+                  {lang==="es" ? "¿Dónde estás basado/a?" : "Where are you based?"}
+                </div>
+                <div style={{ display:"flex", flexWrap:"wrap", gap:"6px" }}>
+                  {["México","LATAM","Europe","North America","Other"].map(loc => (
+                    <button key={loc} onClick={()=>setSurveyData(d=>({...d,country:loc}))}
+                      style={{ padding:"7px 14px", background:surveyData.country===loc?"#0a0a0a":"transparent", color:surveyData.country===loc?"#ffffff":D.mid, border:"1px solid rgba(10,10,10,0.15)", fontFamily:"'DM Mono',monospace", fontSize:"9px", letterSpacing:"0.1em", cursor:"pointer", transition:"all 0.15s" }}>
+                      {loc}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div style={{ display:"flex", gap:"12px" }}>
+                <button onClick={submitSurvey} disabled={!surveyData.challenge}
+                  style={{ flex:1, padding:"14px", background:surveyData.challenge?"#0a0a0a":"rgba(10,10,10,0.1)", border:"none", color:surveyData.challenge?"#ffffff":"#888884", fontFamily:"'DM Mono',monospace", fontSize:"10px", letterSpacing:"0.2em", textTransform:"uppercase", cursor:surveyData.challenge?"pointer":"not-allowed", transition:"all 0.2s" }}>
+                  {lang==="es" ? "Enviar →" : "Submit →"}
+                </button>
+                <button onClick={()=>setSurvey("done")}
+                  style={{ padding:"14px 20px", background:"transparent", border:"1px solid rgba(10,10,10,0.15)", color:D.muted, fontFamily:"'DM Mono',monospace", fontSize:"9px", letterSpacing:"0.15em", cursor:"pointer" }}>
+                  {lang==="es" ? "Omitir" : "Skip"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {survey === "done" && (
+          <div style={{ position:"fixed", bottom:"24px", right:"24px", background:"#0a0a0a", color:"#ffffff", padding:"14px 20px", fontFamily:"'DM Mono',monospace", fontSize:"10px", letterSpacing:"0.15em", zIndex:100, animation:"fadeIn 0.3s ease" }}>
+            {lang==="es" ? "✓ Gracias por tu feedback" : "✓ Thank you for your feedback"}
+          </div>
+        )}
       </div>
     </div>
   );
